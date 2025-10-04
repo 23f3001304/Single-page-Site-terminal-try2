@@ -3,552 +3,699 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>./portfolio.sh</title>
-    <meta name="description" content="A personal portfolio website with a retro terminal interface.">
+    <title>Human@Terminal:~</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gap-s: 0.25rem;
-            --gap-m: 0.5rem;
-            --gap-l: 1rem;
-            --gap-xl: 2rem;
-
-            --font-family-mono: 'Menlo', 'Consolas', 'Monaco', 'Liberation Mono', 'Lucida Console', monospace;
-            --font-size-s: 0.875rem;
-            --font-size-m: 1rem;
-            --font-size-l: 1.125rem;
+            --font-mono: 'Fira Code', monospace;
+            --font-sans: 'Inter', sans-serif;
+            --font-size: 1rem;
             --line-height: 1.6;
-
-            /* Default Theme: Abyss */
-            --background: #000c18;
-            --foreground: #d3d7de;
-            --accent: #00e8c6;
-            --color-1: #ff6666; /* red */
-            --color-2: #82e0ff; /* cyan */
-            --color-3: #f9d880; /* yellow */
-            --color-4: #c58af9; /* purple */
+            --grid-gap: 1rem;
+            
+            /* Default Theme: "Dusk" */
+            --bg-color: #1a1b26;
+            --fg-color: #a9b1d6;
+            --prompt-color: #c0caf5;
+            --accent-color-1: #bb9af7;
+            --accent-color-2: #7aa2f7;
+            --border-color: #414868;
+            --error-color: #f7768e;
+            --success-color: #9ece6a;
         }
 
-        body.theme-light {
-            --background: #f8f8f2;
-            --foreground: #282a36;
-            --accent: #ff79c6;
-            --color-1: #ff5555;
-            --color-2: #8be9fd;
-            --color-3: #f1fa8c;
-            --color-4: #bd93f9;
+        .theme-light {
+            --bg-color: #e0e0e0;
+            --fg-color: #333333;
+            --prompt-color: #1a1a1a;
+            --accent-color-1: #6a0dad;
+            --accent-color-2: #0055a4;
+            --border-color: #cccccc;
+            --error-color: #d32f2f;
+            --success-color: #388e3c;
         }
 
-        body.theme-matrix {
-            --background: #000000;
-            --foreground: #00ff41;
-            --accent: #4affff;
-            --color-1: #c42eff;
-            --color-2: #00ff41;
-            --color-3: #faff2c;
-            --color-4: #ff0041;
+        .theme-matrix {
+            --bg-color: #000000;
+            --fg-color: #00ff41;
+            --prompt-color: #39ff14;
+            --accent-color-1: #bfff00;
+            --accent-color-2: #bfff00;
+            --border-color: #00ff41;
+            --error-color: #e60000;
+            --success-color: #00ff41;
         }
 
-        body.theme-dracula {
-            --background: #282a36;
-            --foreground: #f8f8f2;
-            --accent: #50fa7b;
-            --color-1: #ff5555;
-            --color-2: #8be9fd;
-            --color-3: #f1fa8c;
-            --color-4: #bd93f9;
+        .theme-nord {
+            --bg-color: #2e3440;
+            --fg-color: #d8dee9;
+            --prompt-color: #eceff4;
+            --accent-color-1: #81a1c1;
+            --accent-color-2: #88c0d0;
+            --border-color: #4c566a;
+            --error-color: #bf616a;
+            --success-color: #a3be8c;
+        }
+        
+        .theme-solarized {
+            --bg-color: #002b36;
+            --fg-color: #839496;
+            --prompt-color: #93a1a1;
+            --accent-color-1: #268bd2;
+            --accent-color-2: #2aa198;
+            --border-color: #073642;
+            --error-color: #dc322f;
+            --success-color: #859900;
         }
 
         * {
             box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
             margin: 0;
             padding: 0;
         }
 
+        html {
+            font-size: 16px;
+        }
+
         body {
-            background-color: var(--background);
-            color: var(--foreground);
-            font-family: var(--font-family-mono);
-            font-size: var(--font-size-m);
+            background-color: var(--bg-color);
+            color: var(--fg-color);
+            font-family: var(--font-mono);
+            font-size: var(--font-size);
             line-height: var(--line-height);
             transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        #terminal {
+            display: grid;
+            grid-template-rows: auto 1fr;
             height: 100vh;
-            padding: var(--gap-l);
-            overflow-y: auto;
-            word-break: break-all;
+            padding: var(--grid-gap);
+            gap: var(--grid-gap);
+        }
+
+        header {
+            font-family: var(--font-sans);
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
         }
 
-        #history {
-            flex-grow: 1;
-        }
-
-        a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        a:hover, a:focus {
-            text-decoration: underline;
-        }
-
-        .prompt, .output-command {
-            color: var(--accent);
-        }
-
-        .user {
-            color: var(--color-2);
-        }
-
-        .path {
-            color: var(--color-4);
-        }
-
-        .output-line {
-            white-space: pre-wrap;
-            margin-bottom: var(--gap-m);
-        }
-        
-        .output-line table {
-            border-collapse: collapse;
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        .output-line td, .output-line th {
-            padding: var(--gap-s) var(--gap-m);
-            text-align: left;
-        }
-
-        #input-line {
+        .controls {
             display: flex;
             align-items: center;
-            flex-wrap: nowrap;
+            gap: 1.5rem;
         }
 
-        #input-line .prompt {
-            white-space: nowrap;
-            flex-shrink: 0;
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--prompt-color);
+        }
+
+        .control-group select, .control-group button {
+            background-color: var(--bg-color);
+            color: var(--fg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            font-family: var(--font-mono);
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s, background-color 0.2s;
         }
         
-        #command {
+        .control-group select:focus, .control-group button:focus {
+             border-color: var(--accent-color-2);
+        }
+
+        main {
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) var(--bg-color);
+        }
+
+        #output {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        #output a {
+            color: var(--accent-color-2);
+            text-decoration: underline;
+        }
+        
+        #output a:hover {
+            color: var(--accent-color-1);
+        }
+        
+        .output-line.command {
+            color: var(--prompt-color);
+        }
+
+        .output-line.error {
+            color: var(--error-color);
+        }
+        
+        .output-line.success {
+            color: var(--success-color);
+        }
+        
+        .output-line.ascii {
+            color: var(--accent-color-1);
+            line-height: 1.1;
+            font-size: 0.8rem;
+            text-align: left;
+            margin-bottom: 1rem;
+        }
+
+        .prompt-line {
+            display: flex;
+            align-items: center;
+        }
+        
+        #prompt-symbol {
+            color: var(--accent-color-1);
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        #input {
             background-color: transparent;
             border: none;
-            color: var(--foreground);
-            font-family: var(--font-family-mono);
-            font-size: var(--font-size-m);
-            flex-grow: 1;
             outline: none;
-            padding: 0 var(--gap-m);
-            width: 100%; /* for flex calculation */
+            color: var(--prompt-color);
+            font-family: var(--font-mono);
+            font-size: inherit;
+            flex-grow: 1;
+            caret-color: var(--accent-color-2);
         }
         
-        .ascii-art {
-            color: var(--accent);
-            letter-spacing: -1px;
-            font-size: var(--font-size-s);
+        #input::selection {
+            background-color: var(--accent-color-2);
+            color: var(--bg-color);
+        }
+        
+        #game-canvas {
+            font-family: var(--font-mono);
+            white-space: pre;
+            margin-top: 1rem;
             line-height: 1.2;
-            margin-bottom: var(--gap-l);
-        }
-        
-        .error {
-            color: var(--color-1);
-        }
-        
-        .info {
-            color: var(--color-3);
-        }
-        
-        .highlight {
-            color: var(--accent);
-            font-weight: bold;
         }
 
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 1.2em;
-            background-color: var(--foreground);
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
+        @media (max-width: 600px) {
+            :root {
+                --font-size: 0.9rem;
+            }
+            body {
+                padding: 0.5rem;
+                grid-template-rows: auto 1fr;
+            }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            main {
+                padding: 0.5rem;
+            }
         }
 
-        @keyframes blink {
-            from, to { background-color: transparent; }
-            50% { background-color: var(--foreground); }
-        }
     </style>
 </head>
-<body>
-    <div id="terminal" tabindex="0">
-        <div id="history"></div>
-        <div id="input-line">
-            <span class="prompt"><span class="user">human</span>@<span class="path">~/chill</span>$</span>
-            <input type="text" id="command" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus>
-            <span class="cursor"></span>
+<body class="theme-dusk">
+
+    <header>
+        <div class="site-title">Human@Terminal:~</div>
+        <div class="controls">
+            <div class="control-group">
+                <label for="theme-selector">Theme:</label>
+                <select id="theme-selector">
+                    <option value="theme-dusk">Dusk</option>
+                    <option value="theme-light">Light</option>
+                    <option value="theme-matrix">Matrix</option>
+                    <option value="theme-nord">Nord</option>
+                    <option value="theme-solarized">Solarized</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="ascii-toggle">ASCII Header:</label>
+                <button id="ascii-toggle" role="switch" aria-checked="false">OFF</button>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/figlet/1.5.2/figlet.min.js"></script>
-
+    <main id="terminal-container" tabindex="0">
+        <div id="output"></div>
+        <div class="prompt-line">
+            <span id="prompt-symbol">➜</span>
+            <input type="text" id="input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus>
+        </div>
+    </main>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const terminal = document.getElementById('terminal');
-            const history = document.getElementById('history');
-            const commandInput = document.getElementById('command');
-            const promptEl = document.querySelector('#input-line .prompt');
-            const cursor = document.querySelector('.cursor');
+            const output = document.getElementById('output');
+            const input = document.getElementById('input');
+            const terminalContainer = document.getElementById('terminal-container');
+            const themeSelector = document.getElementById('theme-selector');
+            const asciiToggle = document.getElementById('ascii-toggle');
 
             let commandHistory = [];
             let historyIndex = -1;
-            let initialBanner = 'Hey there';
-            let gameState = {
-                active: false,
-                secretNumber: 0,
-                tries: 0
+            let currentGameState = null;
+
+            const state = {
+                useAscii: false,
             };
 
-            const THEMES = {
-                default: 'Abyss (Default)',
-                light: 'Light',
-                matrix: 'Matrix',
-                dracula: 'Dracula',
+            const ASCII_ART = `
+                _   _ _   _ __  __    _    _   _ 
+               | | | | | | |  \\/  |  / \\  | \\ | |
+               | |_| | | | | |\\/| | / _ \\ |  \\| |
+               |  _  | |_| | |  | |/ ___ \\| |\\  |
+               |_| |_|\\___/|_|  |_/_/   \\_\\_| \\_|
+            `;
+            
+            const print = (content, className = 'output-line') => {
+                const line = document.createElement('div');
+                line.className = className;
+                line.innerHTML = content;
+                output.appendChild(line);
+                scrollToBottom();
+            };
+            
+            const printCommand = (cmd) => {
+                const line = document.createElement('div');
+                line.className = 'output-line command';
+                line.innerHTML = `<span id="prompt-symbol">➜</span> ${cmd}`;
+                output.appendChild(line);
+            }
+
+            const scrollToBottom = () => {
+                terminalContainer.scrollTop = terminalContainer.scrollHeight;
             };
 
             const COMMANDS = {
                 help: {
-                    description: 'Shows a list of available commands.',
+                    description: 'Shows this help message. Kinda meta.',
                     execute: () => {
-                        const commandList = Object.keys(COMMANDS).map(cmd => 
-                            `  <span class="highlight">${cmd.padEnd(10)}</span> ${COMMANDS[cmd].description}`
-                        ).join('\n');
-                        appendOutput(`Available commands:\n${commandList}`);
+                        let helpText = 'Hey there. Here\'s what you can do:<br>';
+                        helpText += '<ul>';
+                        Object.keys(COMMANDS).forEach(cmd => {
+                            helpText += `<li><strong style="color: var(--accent-color-1);">${cmd}</strong>: ${COMMANDS[cmd].description}</li>`;
+                        });
+                        helpText += '</ul>';
+                        print(helpText);
                     }
                 },
                 about: {
-                    description: 'Displays information about me.',
+                    description: 'A little bit about this page.',
                     execute: () => {
-                        const aboutText = `I'm a senior front-end engineer with a passion for creating beautiful, performant, and accessible user experiences. 
-I specialize in Swiss grid typography, fluid motion design, and interactive 3D visuals using three.js.
-I believe in clean code, strong design principles, and a user-first approach. Let's build something amazing together.`;
-                        appendOutput(aboutText);
+                        print('Just a person exploring the web. This terminal is a playground, a digital sketchbook. Feel free to look around.');
                     }
                 },
-                projects: {
-                    description: 'Lists my recent projects.',
+                socials: {
+                    description: 'Find me on the web.',
                     execute: () => {
-                        const projectData = [
-                            { name: 'Project Cygnus', tech: 'React, Three.js, GSAP', url: 'https://github.com/example/cygnus' },
-                            { name: 'QuantumGrid UI', tech: 'Vue, D3.js, TypeScript', url: 'https://github.com/example/quantumgrid' },
-                            { name: 'Aether Engine', tech: 'WebGPU, Rust, WASM', url: 'https://github.com/example/aether' }
-                        ];
-                        let output = 'Here are some of my projects:\n\n';
-                        projectData.forEach(p => {
-                            output += `  <span class="highlight">${p.name}</span>\n`;
-                            output += `  └─ Tech: <span class="info">${p.tech}</span>\n`;
-                            output += `  └─ URL:  <a href="${p.url}" target="_blank">${p.url}</a>\n\n`;
-                        });
-                        appendOutput(output);
+                        print(`
+                            Here's where I hang out:
+                            - <a href="https://github.com/23f3001304" target="_blank">GitHub</a>
+                            - <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank">LinkedIn</a>
+                            - <a href="https://twitter.com/YOUR_TWITTER" target="_blank">Twitter / X</a>
+                        `.trim().replace(/^\s{28}/gm, ''));
                     }
                 },
-                skills: {
-                    description: 'Showcases my technical skills.',
+                clear: {
+                    description: 'Clears the screen. A fresh start.',
                     execute: () => {
-                        const skillsData = {
-                            'Languages': 'JavaScript, TypeScript, HTML5, CSS3/Sass, GLSL',
-                            'Frameworks/Libraries': 'React, Vue, Svelte, Three.js, GSAP, D3.js',
-                            'Tooling': 'Vite, Webpack, Node.js, Git, Figma, Docker',
-                            'Concepts': 'UI/UX Design, Responsive Web Design, Accessibility, Performance Optimization, Swiss Typography'
-                        };
-                        let output = 'My technical toolbox includes:\n\n';
-                        for (const [category, list] of Object.entries(skillsData)) {
-                           output += `  <span class="highlight">${category.padEnd(20)}</span> <span class="info">${list}</span>\n`;
-                        }
-                        appendOutput(output);
-                    }
-                },
-                contact: {
-                    description: 'Provides my contact information.',
-                    execute: () => {
-                        const contactInfo = `You can reach me via:\n
-  <span class="highlight">Email:</span>      <a href="mailto:hello@example.com">hello@example.com</a>
-  <span class="highlight">LinkedIn:</span>   <a href="https://linkedin.com/in/example" target="_blank">linkedin.com/in/example</a>
-  <span class="highlight">GitHub:</span>     <a href="https://github.com/example" target="_blank">github.com/example</a>`;
-                        appendOutput(contactInfo);
-                    }
-                },
-                art: {
-                    description: 'Generates ASCII art. Usage: art [text]',
-                    execute: (args) => {
-                        const text = args.length > 0 ? args.join(' ') : initialBanner;
-                        figlet.text(text, {
-                            font: 'Standard',
-                            horizontalLayout: 'default',
-                            verticalLayout: 'default'
-                        }, (err, data) => {
-                            if (err) {
-                                appendOutput('Error generating ASCII art.', 'error');
-                                return;
-                            }
-                            appendOutput(`<div class="ascii-art">${data}</div>`, null, true);
-                        });
+                        output.innerHTML = '';
+                        printWelcome();
                     }
                 },
                 theme: {
-                    description: 'Changes the terminal theme. Usage: theme [theme_name]',
+                    description: 'Change the look. Usage: theme [name]',
                     execute: (args) => {
+                        const availableThemes = Array.from(themeSelector.options).map(o => o.value.replace('theme-', ''));
                         if (args.length === 0) {
-                            let themeList = 'Available themes:\n';
-                            for(const key in THEMES) {
-                                themeList += `  - <span class="highlight">${key}</span> (${THEMES[key]})\n`;
-                            }
-                            appendOutput(themeList + '\nCurrent theme is set to ' + (document.body.className.replace('theme-','') || 'default'));
+                            print(`No problem. Current theme is <strong style="color:var(--accent-color-2);">${document.body.className.replace('theme-', '')}</strong>.`);
+                            print(`Try one of these: ${availableThemes.join(', ')}.`);
                             return;
                         }
-
-                        const themeName = args[0].toLowerCase();
-                        if (THEMES[themeName]) {
-                            document.body.className = themeName === 'default' ? '' : `theme-${themeName}`;
-                            localStorage.setItem('terminalTheme', themeName);
-                            appendOutput(`Theme changed to <span class="highlight">${themeName}</span>.`);
+                        const themeName = args[0];
+                        if (availableThemes.includes(themeName)) {
+                            applyTheme(`theme-${themeName}`);
+                            print(`Switched to the <strong style="color:var(--accent-color-2);">${themeName}</strong> theme. Nice choice.`, 'output-line success');
                         } else {
-                            appendOutput(`Error: Theme '${themeName}' not found.`, 'error');
+                            print(`Hmm, I don't know the theme "${themeName}". Try one of these: ${availableThemes.join(', ')}.`, 'output-line error');
                         }
                     }
                 },
-                game: {
-                    description: 'Starts a number guessing game.',
+                ascii: {
+                    description: 'Toggle the ASCII art header. For fun.',
                     execute: () => {
-                        gameState.active = true;
-                        gameState.secretNumber = Math.floor(Math.random() * 100) + 1;
-                        gameState.tries = 0;
-                        updatePrompt();
-                        appendOutput('I\'m thinking of a number between 1 and 100.\nType a number to make a guess, or type <span class="highlight">exit</span> to quit.');
+                        toggleAscii();
+                        print(`ASCII header is now ${state.useAscii ? 'ON' : 'OFF'}.`);
                     }
                 },
-                readme: {
-                    description: 'Displays the project README.',
+                repo: {
+                    description: 'Links to the source code for this page.',
                     execute: () => {
-                        const readmeContent = `
-# Interactive Portfolio Terminal
-
-A personal portfolio website inspired by the command-line interface. 
-This project showcases my front-end skills through a unique, interactive user experience.
-
-## Features
-
-- **Command-Based Navigation**: Explore my profile using familiar shell commands.
-- **Customizable Themes**: Change the look and feel with the \`theme\` command.
-- **ASCII Art Generator**: Create text banners using the \`art\` command.
-- **Mini-Game**: Play a number guessing game with the \`game\` command.
-- **Responsive Design**: Works on both desktop and mobile devices.
-
-Built with vanilla JavaScript, HTML, and CSS.
-`;
-                        appendOutput(readmeContent);
+                        print('You can find the code that powers this terminal here: <a href="https://github.com/23f3001304/Single-page-Site-terminal-try2" target="_blank">GitHub Repository</a>.');
                     }
                 },
                 license: {
                     description: 'Displays the MIT License.',
                     execute: () => {
-                        const licenseText = `
-MIT License
-
-Copyright (c) ${new Date().getFullYear()}
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-`;
-                        appendOutput(licenseText);
+                        print(`
+                            <strong style="color:var(--accent-color-1);">The MIT License (MIT)</strong><br><br>
+                            Copyright (c) 2024 Your Name<br><br>
+                            Permission is hereby granted, free of charge, to any person obtaining a copy
+                            of this software and associated documentation files (the "Software"), to deal
+                            in the Software without restriction, including without limitation the rights
+                            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                            copies of the Software, and to permit persons to whom the Software is
+                            furnished to do so, subject to the following conditions:<br><br>
+                            The above copyright notice and this permission notice shall be included in all
+                            copies or substantial portions of the Software.<br><br>
+                            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                            SOFTWARE.
+                        `.trim().replace(/^\s{28}/gm, ''));
                     }
                 },
-                date: {
-                    description: 'Displays the current date and time.',
-                    execute: () => appendOutput(new Date().toString())
-                },
-                clear: {
-                    description: 'Clears the terminal screen.',
-                    execute: () => {
-                        history.innerHTML = '';
+                play: {
+                    description: 'Play a little game. Usage: play [snake|riddle]',
+                    execute: (args) => {
+                        if (currentGameState) {
+                            print('A game is already running. Type `exit` to quit the game first.', 'output-line error');
+                            return;
+                        }
+                        const game = args[0];
+                        if (game === 'snake') {
+                            print('Starting Snake... Use W/A/S/D to move. Type `exit` to quit.', 'output-line success');
+                            currentGameState = new SnakeGame();
+                            currentGameState.start();
+                        } else if (game === 'riddle') {
+                             print('Starting Riddle... Type your answer or `exit` to quit.', 'output-line success');
+                             currentGameState = new RiddleGame();
+                             currentGameState.start();
+                        } else {
+                            print('I only know `snake` and `riddle` for now. Which one?', 'output-line error');
+                        }
                     }
                 },
                 exit: {
-                    description: 'Exits the current context (e.g., game).',
+                    description: 'Exits the current game.',
                     execute: () => {
-                         if (gameState.active) {
-                            gameState.active = false;
-                            updatePrompt();
-                            appendOutput('Game exited. Back to the main terminal.');
+                        if (currentGameState) {
+                            currentGameState.stop();
+                            currentGameState = null;
+                            print('Exited the game.', 'output-line success');
                         } else {
-                            appendOutput('Nothing to exit from.');
+                            print('No game is running, so nothing to exit from.', 'output-line error');
                         }
                     }
                 }
             };
-            
-            const handleGameInput = (input) => {
-                if(input.toLowerCase() === 'exit') {
-                    COMMANDS.exit.execute();
-                    return;
-                }
-                
-                const guess = parseInt(input, 10);
-                if (isNaN(guess)) {
-                    appendOutput('That\'s not a number. Please enter a number between 1 and 100.', 'error');
-                    return;
-                }
-                
-                gameState.tries++;
-                if (guess === gameState.secretNumber) {
-                    appendOutput(`You got it! The number was <span class="highlight">${gameState.secretNumber}</span>. It took you ${gameState.tries} tries.`);
-                    gameState.active = false;
-                    updatePrompt();
-                } else if (guess < gameState.secretNumber) {
-                    appendOutput('Too low. Try again.');
-                } else {
-                    appendOutput('Too high. Try again.');
-                }
-            };
-            
-            const updatePrompt = () => {
-                if(gameState.active) {
-                    promptEl.innerHTML = `<span>Guess a number > </span>`;
-                } else {
-                    promptEl.innerHTML = `<span class="user">human</span>@<span class="path">~/chill</span>$`;
-                }
-            };
 
             const processCommand = (cmd) => {
-                appendOutput(`<span class="prompt">${promptEl.innerHTML}</span> <span class="output-command">${cmd}</span>`, null, true);
-
-                if (gameState.active) {
-                    handleGameInput(cmd);
+                if (currentGameState) {
+                    currentGameState.handleInput(cmd);
                     return;
                 }
-                
-                const [command, ...args] = cmd.trim().split(' ').filter(i => i);
 
-                if (!command) return;
+                const [command, ...args] = cmd.toLowerCase().split(' ').filter(Boolean);
 
-                if (COMMANDS[command]) {
+                if (command in COMMANDS) {
                     COMMANDS[command].execute(args);
                 } else {
-                    appendOutput(`command not found: ${command}. Type 'help' for a list of commands.`, 'error');
+                    print(`command not found: ${command}. Type 'help' if you're lost.`, 'output-line error');
                 }
             };
-
-            const appendOutput = (content, className = 'output-line', isHTML = false) => {
-                const outputDiv = document.createElement('div');
-                outputDiv.classList.add(className);
-
-                if (isHTML) {
-                    outputDiv.innerHTML = content;
-                } else {
-                    // Sanitize text content to prevent XSS
-                    const textNode = document.createTextNode(content);
-                    outputDiv.appendChild(textNode);
-                }
-                
-                history.appendChild(outputDiv);
-                terminal.scrollTop = terminal.scrollHeight;
-            };
-
-            const typeWelcomeMessage = () => {
-                COMMANDS.art.execute([]);
-                const welcomeText = `Welcome to my interactive terminal. I'm a chill human and a front-end engineer.
-Type <span class="highlight">'help'</span> to see a list of available commands.`;
-                
-                const p = document.createElement('p');
-                p.className = 'output-line';
-                history.appendChild(p);
-
-                anime({
-                    targets: p,
-                    innerHTML: [0, welcomeText.length],
-                    duration: 2000,
-                    easing: 'linear',
-                    round: 1,
-                    update: (anim) => {
-                        p.innerHTML = welcomeText.substring(0, Math.round(anim.animations[0].currentValue));
-                        terminal.scrollTop = terminal.scrollHeight;
-                    }
-                });
-            };
-
-            const applySavedTheme = () => {
-                const savedTheme = localStorage.getItem('terminalTheme') || 'default';
-                if (savedTheme !== 'default') {
-                    document.body.className = `theme-${savedTheme}`;
-                }
-            };
-
-            commandInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const cmd = commandInput.value.trim();
-                    commandInput.value = '';
-                    
+            
+            const handleInput = (e) => {
+                if (e.key === 'Enter' && input.value.trim() !== '') {
+                    const cmd = input.value.trim();
+                    printCommand(cmd);
                     if (cmd) {
                         commandHistory.unshift(cmd);
                         historyIndex = -1;
                         processCommand(cmd);
                     }
+                    input.value = '';
                 } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
                     if (historyIndex < commandHistory.length - 1) {
                         historyIndex++;
-                        commandInput.value = commandHistory[historyIndex];
+                        input.value = commandHistory[historyIndex];
+                        input.setSelectionRange(input.value.length, input.value.length);
                     }
                 } else if (e.key === 'ArrowDown') {
+                     e.preventDefault();
                     if (historyIndex > 0) {
                         historyIndex--;
-                        commandInput.value = commandHistory[historyIndex];
+                        input.value = commandHistory[historyIndex];
+                        input.setSelectionRange(input.value.length, input.value.length);
                     } else {
                         historyIndex = -1;
-                        commandInput.value = '';
+                        input.value = '';
                     }
                 } else if (e.key === 'Tab') {
                     e.preventDefault();
-                    const currentInput = commandInput.value.toLowerCase();
-                    const suggestions = Object.keys(COMMANDS).filter(cmd => cmd.startsWith(currentInput));
+                    // Basic autocomplete
+                    const currentInput = input.value.toLowerCase();
+                    const suggestions = Object.keys(COMMANDS).filter(c => c.startsWith(currentInput));
                     if (suggestions.length === 1) {
-                        commandInput.value = suggestions[0];
+                        input.value = suggestions[0];
                     }
                 }
-            });
+            };
+            
+            const printWelcome = () => {
+                if (state.useAscii) {
+                    print(ASCII_ART, 'output-line ascii');
+                }
+                print('Welcome. I\'m just a chill human. Type `help` to see what we can do.');
+            };
+            
+            const applyTheme = (themeClass) => {
+                document.body.className = '';
+                document.body.classList.add(themeClass);
+                themeSelector.value = themeClass;
+                localStorage.setItem('terminalTheme', themeClass);
+            };
 
-            terminal.addEventListener('click', () => {
-                commandInput.focus();
-            });
+            const toggleAscii = () => {
+                state.useAscii = !state.useAscii;
+                asciiToggle.textContent = state.useAscii ? 'ON' : 'OFF';
+                asciiToggle.setAttribute('aria-checked', state.useAscii);
+                localStorage.setItem('terminalAscii', state.useAscii);
+                COMMANDS.clear.execute();
+            };
+            
+            const init = () => {
+                // Load settings
+                const savedTheme = localStorage.getItem('terminalTheme') || 'theme-dusk';
+                const savedAscii = localStorage.getItem('terminalAscii') === 'true';
 
-            commandInput.addEventListener('focus', () => cursor.style.display = 'inline-block');
-            commandInput.addEventListener('blur', () => cursor.style.display = 'none');
+                applyTheme(savedTheme);
+                if (savedAscii) {
+                    toggleAscii(); // This will also call clear() and printWelcome()
+                } else {
+                    printWelcome();
+                }
 
-            // Initialization
-            applySavedTheme();
-            typeWelcomeMessage();
+                // Event Listeners
+                input.addEventListener('keydown', handleInput);
+                terminalContainer.addEventListener('click', () => input.focus());
+                themeSelector.addEventListener('change', (e) => applyTheme(e.target.value));
+                asciiToggle.addEventListener('click', toggleAscii);
+            };
+            
+            // --- GAMES ---
+            class RiddleGame {
+                constructor() {
+                    this.riddles = [
+                        { q: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", a: "echo" },
+                        { q: "What has an eye, but cannot see?", a: "needle" },
+                        { q: "What is full of holes but still holds water?", a: "sponge" }
+                    ];
+                    this.currentRiddle = null;
+                }
+                
+                start() {
+                    this.currentRiddle = this.riddles[Math.floor(Math.random() * this.riddles.length)];
+                    print(`Riddle me this: ${this.currentRiddle.q}`);
+                }
+                
+                stop() {
+                    this.currentRiddle = null;
+                }
+                
+                handleInput(answer) {
+                    if (answer.toLowerCase() === this.currentRiddle.a) {
+                        print("You got it! Well done.", "output-line success");
+                        currentGameState.stop();
+                        currentGameState = null;
+                    } else {
+                        print("Not quite. Try again or type `exit` to give up.", "output-line error");
+                    }
+                }
+            }
+
+            class SnakeGame {
+                constructor() {
+                    this.width = 20;
+                    this.height = 10;
+                    this.snake = [{ x: 5, y: 5 }];
+                    this.food = {};
+                    this.direction = 'RIGHT';
+                    this.nextDirection = 'RIGHT';
+                    this.speed = 200;
+                    this.interval = null;
+                    this.score = 0;
+                    this.gameContainer = null;
+                    this.isOver = false;
+                }
+
+                createGameContainer() {
+                    this.gameContainer = document.createElement('div');
+                    this.gameContainer.id = 'game-canvas';
+                    output.appendChild(this.gameContainer);
+                }
+
+                generateFood() {
+                    this.food = {
+                        x: Math.floor(Math.random() * this.width),
+                        y: Math.floor(Math.random() * this.height)
+                    };
+                    if (this.snake.some(seg => seg.x === this.food.x && seg.y === this.food.y)) {
+                        this.generateFood();
+                    }
+                }
+
+                draw() {
+                    if (!this.gameContainer) return;
+                    let grid = Array(this.height).fill(null).map(() => Array(this.width).fill(' '));
+                    
+                    this.snake.forEach(seg => {
+                        if (grid[seg.y] && grid[seg.y][seg.x] !== undefined) {
+                            grid[seg.y][seg.x] = '■';
+                        }
+                    });
+
+                    if (grid[this.food.y] && grid[this.food.y][this.food.x] !== undefined) {
+                        grid[this.food.y][this.food.x] = '●';
+                    }
+
+                    let border = '+' + '─'.repeat(this.width) + '+';
+                    let gameText = border + '\n';
+                    gameText += grid.map(row => '│' + row.join('') + '│').join('\n');
+                    gameText += '\n' + border;
+                    gameText += `\nScore: ${this.score}`;
+                    this.gameContainer.textContent = gameText;
+                }
+
+                update() {
+                    if (this.isOver) return;
+
+                    this.direction = this.nextDirection;
+                    const head = { ...this.snake[0] };
+
+                    switch (this.direction) {
+                        case 'UP': head.y--; break;
+                        case 'DOWN': head.y++; break;
+                        case 'LEFT': head.x--; break;
+                        case 'RIGHT': head.x++; break;
+                    }
+                    
+                    // Wall collision
+                    if (head.x < 0 || head.x >= this.width || head.y < 0 || head.y >= this.height) {
+                        this.gameOver();
+                        return;
+                    }
+
+                    // Self collision
+                    if (this.snake.some(seg => seg.x === head.x && seg.y === head.y)) {
+                        this.gameOver();
+                        return;
+                    }
+
+                    this.snake.unshift(head);
+
+                    if (head.x === this.food.x && head.y === this.food.y) {
+                        this.score++;
+                        this.generateFood();
+                    } else {
+                        this.snake.pop();
+                    }
+
+                    this.draw();
+                }
+                
+                gameOver() {
+                    this.isOver = true;
+                    clearInterval(this.interval);
+                    print('Game Over! Your final score was ' + this.score, 'output-line error');
+                    currentGameState.stop();
+                    currentGameState = null;
+                }
+                
+                handleInput() { /* We use the global keydown listener for this game */ }
+
+                handleKeyDown(e) {
+                    e.preventDefault();
+                    switch (e.key.toLowerCase()) {
+                        case 'w': if (this.direction !== 'DOWN') this.nextDirection = 'UP'; break;
+                        case 's': if (this.direction !== 'UP') this.nextDirection = 'DOWN'; break;
+                        case 'a': if (this.direction !== 'RIGHT') this.nextDirection = 'LEFT'; break;
+                        case 'd': if (this.direction !== 'LEFT') this.nextDirection = 'RIGHT'; break;
+                    }
+                }
+                
+                start() {
+                    this.createGameContainer();
+                    this.generateFood();
+                    this.gameKeyDown = this.handleKeyDown.bind(this); // Bind context
+                    document.addEventListener('keydown', this.gameKeyDown);
+                    this.interval = setInterval(() => this.update(), this.speed);
+                    input.disabled = true;
+                }
+
+                stop() {
+                    clearInterval(this.interval);
+                    document.removeEventListener('keydown', this.gameKeyDown);
+                    input.disabled = false;
+                    input.focus();
+                    if(this.gameContainer) this.gameContainer.remove();
+                }
+            }
+
+            init();
         });
     </script>
 </body>
