@@ -1,107 +1,115 @@
 ```markdown
-# Holographic Dossier: A WebGL Terminal Résumé
+# Hemang :: Web3 Dossier
+
+[
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+](https://opensource.org/licenses/MIT)
+
+An avant-garde, command-driven resume experience that fuses the discipline of Swiss design with the high-energy artistry of WebGL shaders. This single-page application functions as a living dossier, presenting a professional profile within an interactive, full-screen terminal.
+
+The interface is built on a foundation of crystalline grid lines, asymmetric layouts, and refined typography, drenched in holographic textures, volumetric light, and glassmorphism. It's a meticulously crafted world that feels both mathematically precise and artistically outrageous.
+
+[View Live Demo](https://coehemang.github.io/)
 
 
-![Project Banner](https://i.ibb.co/jZxwXR2Y/1759419391197.png)
+![Live Demo Screenshot](https://i.ibb.co/L5QG2F3/image.png)
 
 
 ## Summary
 
-This project is a complete architectural overhaul of a static web application into a web3-grade, holographic résumé. It presents a single-page, command-driven experience that fuses the discipline of Swiss design with high-energy shader artistry. The interface is an avant-garde command center, featuring crystalline grid lines, asymmetric layouts, and refined typography, all bathed in holographic textures, volumetric light, and glassmorphism.
+This project is an architectural push to sculpt a resume that transcends traditional formats. It leverages `three.js` for a reactive WebGL environment, `GSAP` for sophisticated timeline choreography, and `anime.js` for precise micro-interactions. The goal is a seamless narrative arc—from an identity mantra to deep-dives into skills and projects—all navigated through a futuristic command-line interface.
 
-The core interaction model is a full-screen terminal where user commands stream futuristic log cards containing résumé information. These elements are choreographed with sophisticated motion states using GSAP and anime.js, while the immersive environment is rendered with three.js, featuring reactive texture stacks, refractive panels, and particle systems that respond to user input. The experience is designed to be a "living dossier," offering a narrative journey through a professional's identity and skills, while adhering to strict accessibility and performance standards.
+Every element, from the kinetic typography to the shader-driven WebGL portrait, is designed to be responsive, accessible, and respectful of user preferences like `prefers-reduced-motion`.
 
 ## Setup
 
-To run this project locally, ensure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
+This is a static web application with no server-side dependencies. To run it locally:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
+    git clone https://github.com/your-username/your-repository-name.git
     ```
 
-2.  **Install dependencies:**
-    The project is self-contained with dependencies managed via npm.
+2.  **Navigate to the project directory:**
     ```bash
-    npm install
+    cd your-repository-name
     ```
 
-3.  **Run the development server:**
-    This command will start a local server and open the application in your default browser.
-    ```bash
-    npm run dev
-    ```
+3.  **Open the application:**
+    Simply open the `index.html` file in a modern web browser. For the best experience and to avoid potential CORS issues with asset loading, it's recommended to use a local development server.
+
+    *   **Using VS Code's Live Server:** Right-click `index.html` and select "Open with Live Server".
+    *   **Using Python:**
+        ```bash
+        # For Python 3
+        python -m http.server
+
+        # For Python 2
+        python -m SimpleHTTPServer
+        ```
 
 ## Usage
 
-The entire experience is navigated through the command-line interface. Type a command and press `Enter` to execute. For a list of all available commands, type `help`.
+Interact with the application by typing commands into the terminal prompt. All commands stream their output as futuristic log cards that animate onto the screen. Type `help` to see a list of available commands at any time.
 
 ### Available Commands
 
-| Command         | Description                                                                 |
-| --------------- | --------------------------------------------------------------------------- |
-| `help`          | Displays a list of all available commands and their descriptions.           |
-| `whoami`        | Prints a brief biography and professional headline.                         |
-| `mantra`        | Displays a personal or professional mantra.                                 |
-| `timeline`      | Shows a chronological overview of education and experience.                 |
-| `experience`    | Details professional and research experience, including work at DRDO.       |
-| `skills`        | Lists core technical competencies and areas of expertise.                   |
-| `projects`      | Showcases featured projects as interactive, holographic cards.              |
-| `certifications`| Displays a list of completed certifications and qualifications.             |
-| `publications`  | Lists published works and articles.                                         |
-| `languages`     | Shows proficiency in spoken and written languages.                          |
-| `achievements`  | Highlights key accomplishments and awards.                                  |
-| `references`    | Provides information on how to request professional references.             |
-| `socials`       | Displays links to social and professional networks like LinkedIn.           |
-| `contact`       | Shows contact information, including email.                                 |
-| `availability`  | Displays current professional availability for new opportunities.           |
-| `download`      | Provides a link to download a traditional PDF version of the résumé.        |
-| `theme`         | Cycles through curated visual themes: `neon`, `swiss`, `dusk`, `noir`.      |
-| `art`           | Toggles the hero banner ASCII art or other visual flourishes.               |
-| `clear`         | Clears all output from the terminal screen.                                 |
+| Command         | Description                                                               | Arguments                  |
+| --------------- | ------------------------------------------------------------------------- | -------------------------- |
+| **CORE**        |                                                                           |                            |
+| `help`          | Displays this list of all available commands.                             | -                          |
+| `clear`         | Clears all output from the terminal screen.                               | -                          |
+| `mantra`        | Displays the core philosophy and approach.                                | -                          |
+| `whoami`        | Prints a detailed biography and professional headline.                    | -                          |
+| `socials`       | Lists all social and professional network links.                          | -                          |
+| **PROFESSIONAL**|                                                                           |                            |
+| `experience`    | Details professional work and research experience.                        | -                          |
+| `timeline`      | Shows a chronological overview of education and career milestones.        | -                          |
+| `skills`        | Lists key technical and research skills.                                  | -                          |
+| `projects`      | Displays a showcase of selected projects as holographic cards.            | -                          |
+| `certifications`| Lists all professional certifications.                                    | -                          |
+| `publications`  | Shows a list of published works.                                          | -                          |
+| `achievements`  | Highlights significant accomplishments.                                   | -                          |
+| **UTILITY**     |                                                                           |                            |
+| `languages`     | Lists spoken and written languages and proficiency levels.                | -                          |
+| `contact`       | Displays contact information.                                             | -                          |
+| `availability`  | Shows current professional availability.                                  | -                          |
+| `references`    | Information on how to request professional references.                    | -                          |
+| `download`      | Provides a link to download the resume in PDF format.                     | -                          |
+| `theme`         | Cycles through visual themes or sets a specific one.                      | `neon`, `mono`, `dusk`, `noir` |
+| `art`           | Toggles post-processing effects and decorative shaders.                   | -                          |
+
+**Example:**
+To change the visual style to the monochrome Swiss palette, type:
+`theme mono`
 
 ## Code Explanation
 
-This project is architected with a modern JavaScript stack, focusing on modularity, performance, and visual fidelity.
+The application's architecture is designed to be modular and performant, centered around three core pillars: rendering, animation, and interactivity.
 
-*   **Rendering Engine (`three.js`)**: The core of the visual experience. Three.js is used to create the 3D scene, manage the WebGL renderer, and implement all shader-based materials. This includes the reactive background grid, volumetric light effects, glassmorphic panels, and the interactive WebGL portrait with its caustics, scanlines, and particle halos.
+### Rendering Engine (Three.js)
 
-*   **Animation & Choreography**:
-    *   **GSAP (GreenSock Animation Platform)**: Used for complex, timeline-based choreographies. This includes the sequenced appearance of command outputs ("log cards") and major scene transitions, ensuring a fluid narrative flow.
-    *   **anime.js**: Employed for micro-interactions and stateful feedback. This powers kinetic typography, liquid UI transitions, subtle parallax effects on text, and pulse-driven highlights on focus or hover.
+The immersive background and interactive elements are powered by a `three.js` WebGL scene. This is not a static video or image; it's a live, generative environment.
+*   **Reactive Textures:** The scene uses a stack of textures and shaders to create effects like refractive glass panels, noise-driven displacement, and iridescent overlays that respond to cursor movement and command context.
+*   **WebGL Portrait:** The profile photo is transformed into an interactive WebGL object. It features layered scanlines, caustics, glitch sweeps, and a reactive particle halo that breathes with the application's state. A fallback CSS/SVG version ensures compatibility.
+*   **Theming:** The `theme` command directly updates shader uniforms, material properties, and scene lighting in real-time to transition between palettes like `neon` and `monochrome Swiss` without visual glitches.
 
-*   **State Management & Data**: All résumé content is centralized in a single JavaScript object (`data/resume.js`). This makes updating information straightforward without needing to touch the application's logic. Session state, such as the selected theme, is managed in-memory and persisted for the user's session.
+### Motion System (GSAP & anime.js)
 
-*   **UI & Command Logic (`main.js`)**: The primary application logic resides here. It handles user input from the terminal, parses commands, retrieves the corresponding data, and orchestrates the rendering of the output cards onto the screen. It also integrates with the animation and WebGL modules to trigger visual and audio feedback.
+Motion is central to the experience, designed to be both expressive and controlled.
+*   **GSAP (GreenSock Animation Platform):** Used for complex, timeline-based choreographies. This includes the sequenced reveal of command output cards, full-screen transitions, and major state changes that require precise synchronization.
+*   **anime.js:** Powers the micro-interactions. This library is used for its lightweight and performant handling of kinetic typography, liquid-like hover effects, pulse-driven UI highlights, and other subtle movements that enhance user feedback.
+*   **Accessibility:** All motion respects the `prefers-reduced-motion` media query. When enabled, dramatic animations are disabled or replaced with simple, elegant cross-fades.
 
-*   **Accessibility**: A high priority. The application respects the `prefers-reduced-motion` media query to disable non-essential animations. The interface is fully keyboard-navigable, and ARIA attributes are used to ensure it is screen-reader compatible. All themes are designed to meet high-contrast standards.
+### Command & State Management
+
+A central JavaScript module handles all user input and application state.
+*   **Command Parser:** A simple but effective parser reads user input, identifies valid commands and arguments, and triggers the corresponding function.
+*   **Output Stream:** Command outputs are dynamically generated as HTML elements and appended to the DOM. GSAP orchestrates their animated entry to create the "streaming log" effect.
+*   **Stateful Feedback:** The system integrates audio cues for loading states, success confirmations, and error notifications, enhancing the command-center feel. The user's selected theme is persisted for the duration of the session using `sessionStorage`.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for full details.
 
-```
-MIT License
-
-Copyright (c) 2024 [Your Name]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
 ```
