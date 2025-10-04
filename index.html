@@ -5,46 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hemang :: Web3 Dossier</title>
     <meta name="description" content="A web3-grade resume world for Hemang, fusing Swiss design with high-energy shader artistry.">
+    <meta name="author" content="Hemang">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/jZxwXR2Y/1759419391197.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --font-primary: 'Inter', sans-serif;
-            --font-mono: 'Source Code Pro', monospace;
-            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+            --font-mono: 'Roboto Mono', monospace;
+            --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+            --base-unit: 8px;
+            --border-radius: 4px;
 
-            /* Neon Theme (Default) */
-            --color-bg: #0a0a0f;
-            --color-text: #e0e0e0;
-            --color-primary: #00f0ff;
-            --color-secondary: #ff00ff;
-            --color-accent: #f0ff00;
-            --color-error: #ff4d4d;
-            --color-success: #4dff88;
-            --glass-bg: rgba(16, 16, 24, 0.6);
-            --glass-border: rgba(0, 240, 255, 0.2);
-            --grid-line-color: rgba(0, 240, 255, 0.08);
-            --shadow-glow: 0 0 15px rgba(0, 240, 255, 0.2), 0 0 30px rgba(0, 240, 255, 0.1);
+            /* Default Theme: Neon */
+            --theme-bg: #030409;
+            --theme-text: #EAEAEA;
+            --theme-primary: #00F0FF;
+            --theme-secondary: #FF00FF;
+            --theme-accent: #FAFF00;
+            --theme-error: #FF4D4D;
+            --theme-success: #4DFF88;
+            --theme-glass-bg: rgba(16, 24, 40, 0.65);
+            --theme-glass-border: rgba(0, 240, 255, 0.2);
+            --theme-grid-line: rgba(0, 240, 255, 0.07);
+            --theme-shadow-glow: 0 0 16px rgba(0, 240, 255, 0.2), 0 0 32px rgba(0, 240, 255, 0.1);
         }
 
-        body.theme-monochrome {
-            --color-bg: #f0f0f0;
-            --color-text: #1a1a1a;
-            --color-primary: #000000;
-            --color-secondary: #555555;
-            --color-accent: #0000ff;
-            --color-error: #d90000;
-            --color-success: #008a00;
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --grid-line-color: rgba(0, 0, 0, 0.08);
-            --shadow-glow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        body[data-theme="monochrome"] {
+            --theme-bg: #EFEFEF;
+            --theme-text: #1a1a1a;
+            --theme-primary: #000000;
+            --theme-secondary: #555555;
+            --theme-accent: #0000FF;
+            --theme-error: #D90000;
+            --theme-success: #008A00;
+            --theme-glass-bg: rgba(255, 255, 255, 0.7);
+            --theme-glass-border: rgba(0, 0, 0, 0.1);
+            --theme-grid-line: rgba(0, 0, 0, 0.06);
+            --theme-shadow-glow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        body[data-theme="dusk"] {
+            --theme-bg: #191921;
+            --theme-text: #D1D1D6;
+            --theme-primary: #FFA87C;
+            --theme-secondary: #9E88A8;
+            --theme-accent: #FFD6A5;
+            --theme-error: #FF7C7C;
+            --theme-success: #7AFFC3;
+            --theme-glass-bg: rgba(40, 35, 50, 0.6);
+            --theme-glass-border: rgba(255, 168, 124, 0.2);
+            --theme-grid-line: rgba(255, 168, 124, 0.07);
+            --theme-shadow-glow: 0 0 16px rgba(255, 168, 124, 0.2);
+        }
+        
+        body[data-theme="noir"] {
+            --theme-bg: #000000;
+            --theme-text: #CCCCCC;
+            --theme-primary: #FFFFFF;
+            --theme-secondary: #888888;
+            --theme-accent: #00FFEA;
+            --theme-error: #FF6B6B;
+            --theme-success: #6BFF8E;
+            --theme-glass-bg: rgba(20, 20, 20, 0.6);
+            --theme-glass-border: rgba(255, 255, 255, 0.15);
+            --theme-grid-line: rgba(255, 255, 255, 0.05);
+            --theme-shadow-glow: 0 0 16px rgba(255, 255, 255, 0.15);
         }
 
         *, *::before, *::after {
@@ -57,10 +86,11 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: var(--color-bg);
-            color: var(--color-text);
+            background-color: var(--theme-bg);
+            color: var(--theme-text);
             font-family: var(--font-primary);
             font-size: 16px;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         #webgl-canvas {
@@ -78,13 +108,16 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 1;
-            width: 300px;
-            height: 300px;
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
             background-image: url('https://i.ibb.co/jZxwXR2Y/1759419391197.png');
             background-size: cover;
-            border: 2px solid var(--color-primary);
-            box-shadow: var(--shadow-glow);
+            background-position: center;
+            border: 2px solid var(--theme-primary);
+            box-shadow: var(--theme-shadow-glow);
+            filter: grayscale(100%) contrast(1.2);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         #preloader {
@@ -93,16 +126,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--color-bg);
+            background: var(--theme-bg);
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: var(--font-mono);
-            color: var(--color-primary);
-            font-size: 1.2rem;
+            color: var(--theme-primary);
+            font-size: 1.1rem;
             opacity: 1;
             transition: opacity 0.5s var(--ease-out-quart);
+            letter-spacing: 2px;
         }
         
         #preloader.hidden {
@@ -110,60 +144,55 @@
             pointer-events: none;
         }
 
-        #terminal-container {
+        main {
             position: relative;
             z-index: 2;
             width: 100%;
             height: 100%;
-            padding: 2vw;
+            padding: calc(var(--base-unit) * 3);
             display: flex;
             flex-direction: column;
             background-image:
-                linear-gradient(var(--grid-line-color) 1px, transparent 1px),
-                linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px);
+                linear-gradient(var(--theme-grid-line) 1px, transparent 1px),
+                linear-gradient(to right, var(--theme-grid-line) 1px, transparent 1px);
             background-size: 40px 40px;
+            transition: background-image 0.4s ease;
         }
         
         #output-container {
             flex-grow: 1;
             overflow-y: auto;
-            padding-right: 15px; /* for scrollbar */
+            padding-right: calc(var(--base-unit) * 2);
         }
         
-        #output-container::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        #output-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        #output-container::-webkit-scrollbar-thumb {
-            background-color: var(--color-primary);
-            border-radius: 2px;
-        }
+        #output-container::-webkit-scrollbar { width: 4px; }
+        #output-container::-webkit-scrollbar-track { background: transparent; }
+        #output-container::-webkit-scrollbar-thumb { background-color: var(--theme-primary); border-radius: 2px; }
 
         .output-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-glow);
+            background: var(--theme-glass-bg);
+            border: 1px solid var(--theme-glass-border);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border-radius: var(--border-radius);
+            padding: calc(var(--base-unit) * 3);
+            margin-bottom: calc(var(--base-unit) * 3);
+            box-shadow: var(--theme-shadow-glow);
             opacity: 0;
             transform: translateY(20px);
+            transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         .input-line-history {
-            margin-bottom: 0.5rem;
+            margin-bottom: var(--base-unit);
             font-family: var(--font-mono);
+            opacity: 0.8;
         }
         
         .prompt-symbol {
-            color: var(--color-primary);
-            margin-right: 0.5em;
+            color: var(--theme-primary);
+            margin-right: var(--base-unit);
+            transition: color 0.4s ease;
         }
         
         .output-content {
@@ -174,50 +203,60 @@
         }
 
         .output-content h2 {
-            font-family: var(--font-primary);
-            font-weight: 700;
             font-size: 1.5rem;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 0.5rem;
+            color: var(--theme-primary);
+            margin-bottom: calc(var(--base-unit) * 2);
+            border-bottom: 1px solid var(--theme-glass-border);
+            padding-bottom: var(--base-unit);
+            transition: color 0.4s ease, border-color 0.4s ease;
         }
         
         .output-content h3 {
             font-family: var(--font-mono);
-            font-weight: 600;
             font-size: 1.1rem;
-            color: var(--color-secondary);
-            margin-top: 1.2rem;
-            margin-bottom: 0.5rem;
+            color: var(--theme-secondary);
+            margin-top: calc(var(--base-unit) * 2.5);
+            margin-bottom: var(--base-unit);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.4s ease;
         }
         
         .output-content strong {
-            color: var(--color-accent);
+            color: var(--theme-accent);
             font-weight: 500;
+            transition: color 0.4s ease;
         }
         
         .output-content a {
-            color: var(--color-primary);
+            color: var(--theme-primary);
             text-decoration: none;
-            border-bottom: 1px dotted var(--color-primary);
+            border-bottom: 1px solid transparent;
             transition: color 0.3s, border-bottom-color 0.3s;
         }
         
-        .output-content a:hover {
-            color: var(--color-accent);
-            border-bottom-color: var(--color-accent);
+        .output-content a:hover, .output-content a:focus {
+            color: var(--theme-accent);
+            border-bottom-color: var(--theme-accent);
+            outline: none;
         }
         
         .output-content ul {
             list-style: none;
-            padding-left: 1em;
+            padding-left: calc(var(--base-unit) * 2);
         }
         
+        .output-content li {
+            position: relative;
+            padding-left: calc(var(--base-unit) * 2.5);
+        }
+
         .output-content li::before {
             content: '»';
-            color: var(--color-primary);
-            margin-right: 0.75em;
+            position: absolute;
+            left: 0;
+            color: var(--theme-primary);
+            transition: color 0.4s ease;
         }
 
         #input-line {
@@ -225,25 +264,31 @@
             align-items: center;
             font-family: var(--font-mono);
             font-size: 1.1rem;
-            margin-top: 1rem;
+            margin-top: var(--base-unit);
+            flex-shrink: 0;
         }
         
+        label {
+            position: absolute;
+            left: -9999px;
+        }
+
         #command-input {
             flex-grow: 1;
             border: none;
             background: transparent;
-            color: var(--color-text);
+            color: var(--theme-text);
             font-family: inherit;
             font-size: inherit;
             outline: none;
+            caret-color: var(--theme-primary);
+            transition: color 0.4s ease, caret-color 0.4s ease;
         }
         
         #command-input::placeholder {
-            color: rgba(224, 224, 224, 0.4);
-        }
-        
-        body.theme-monochrome #command-input::placeholder {
-            color: rgba(26, 26, 26, 0.4);
+            color: var(--theme-secondary);
+            opacity: 0.6;
+            transition: color 0.4s ease;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -252,391 +297,392 @@
                 transition: none !important;
             }
         }
+        
+        @media (max-width: 768px) {
+            html, body { font-size: 14px; }
+            main { padding: calc(var(--base-unit) * 2); }
+            .output-card { padding: calc(var(--base-unit) * 2); }
+        }
     </style>
 </head>
-<body>
+<body data-theme="neon">
     <div id="preloader">INITIALIZING_DOSSIER...</div>
     <div id="webgl-canvas"></div>
-    <div id="webgl-fallback"></div>
+    <div id="webgl-fallback" role="img" aria-label="A stylized portrait image of Hemang."></div>
     
-    <div id="terminal-container">
-        <div id="output-container"></div>
+    <main aria-label="Terminal Interface">
+        <div id="output-container" aria-live="polite"></div>
         <div id="input-line">
-            <span class="prompt-symbol">HMG_OS &gt;</span>
-            <input type="text" id="command-input" autofocus autocomplete="off" spellcheck="false" placeholder="Type 'help' to start...">
+            <label for="command-input" class="prompt-symbol">HMG_OS &gt;</label>
+            <span class="prompt-symbol" aria-hidden="true">HMG_OS &gt;</span>
+            <input type="text" id="command-input" autofocus autocomplete="off" spellcheck="false" placeholder="Type 'help' to begin..." aria-label="Command input">
         </div>
-    </div>
+    </main>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js",
+        "gsap": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js",
+        "animejs": "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.es.js"
+      }
+    }
+    </script>
+    <script type="module">
+    import * as THREE from 'three';
+    import { gsap } from 'gsap';
+    import anime from 'animejs';
+
+    // --- DATA STORE ---
+    const RESUME_DATA = {
+        name: "Hemang",
+        headline: "Learning Java, C++, C, Python, JavaScript and MERN Stack | BS in DS @ IITM | BE CSIT @ MBMU | AI/ML enthusiast | Preparing to write 12M lines of code",
+        mantra: "Architecting digital realities with Swiss precision and shader artistry. Every line of code is a brushstroke on the canvas of computation.",
+        whoami: "A dual-degree student architecting a future in technology, pursuing a BS in Data Science from IIT Madras and a BE in Information Technology from MBMU. My focus is on merging robust software engineering with the creative potential of AI and machine learning. I am passionate about building high-performance, visually compelling applications and am on a personal mission to write 12 million lines of meaningful code.",
+        contact: {
+            email: "coehemang@gmail.com",
+            linkedin: "https://www.linkedin.com/in/coehemang/",
+        },
+        socials: {
+            linkedin: "https://www.linkedin.com/in/coehemang/",
+        },
+        skills: {
+            "Programming": ["Java", "C++", "C", "Python", "JavaScript"],
+            "Web Tech": ["MERN Stack (MongoDB, Express, React, Node.js)", "HTML5", "CSS3", "three.js"],
+            "Core Skills": ["AI/ML", "Data Science", "Research Skills", "GaN"],
+            "Databases": ["SQL (Advanced)"],
+        },
+        experience: [
+            { role: "Research Intern", company: "DRDO", duration: "June 2025 – Present", description: "Engaged in the GANxART project, focusing on applying Generative Adversarial Networks in creative and artistic domains." }
+        ],
+        education: [
+            { degree: "BS in Data Science & Applications", institution: "IIT Madras", duration: "2023 – 2027" },
+            { degree: "BE in Computer Science & IT", institution: "MBM University", duration: "2023 – 2027" },
+        ],
+        certifications: [
+            "Amazon Introduction to Software Development",
+            "SQL (Advanced)",
+            "Introduction to SQL",
+            "Certificate of Excellence in Basic Java",
+            "Full Stack Web Development"
+        ],
+        publications: [
+            { title: "Crushader Issue 1", context: "Contributor" },
+            { title: "Tips for Beginners in Code", context: "Author" }
+        ],
+        languages: [
+            { lang: "Hindi", proficiency: "Native / Bilingual" },
+            { lang: "English", proficiency: "Professional Working" }
+        ],
+        availability: "Available for challenging internships and collaborative projects.",
+        references: "Available upon request.",
+        achievements: ["Goal-oriented individual currently focused on a long-term personal project of writing 12 million lines of high-quality code."],
+    };
     
-    <audio id="audio-keypress" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-computer-sounds/computer_keyboard_key_press_001.mp3" preload="auto"></audio>
-    <audio id="audio-enter" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-computer-sounds/computer_ui_beep_double_001.mp3" preload="auto"></audio>
-    <audio id="audio-error" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-35328/zapsplat_multimedia_game_sound_error_001_38359.mp3" preload="auto"></audio>
+    const IS_REDUCED_MOTION = window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
 
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- DATA STORE ---
-        const RESUME_DATA = {
-            name: "Hemang",
-            headline: "Learning Java, C++, C, Python, JavaScript and MERN Stack | BS in DS @ IITM | BE CSIT @ MBMU | AI/ML enthusiast | Preparing to write 12M lines of code",
-            mantra: "Architecting digital realities with Swiss precision and shader artistry. Every line of code is a brushstroke on the canvas of computation.",
-            whoami: "A dual-degree student architecting a future in technology, currently pursuing a BS in Data Science from IIT Madras and a BE in Information Technology from MBMU. My focus is on merging robust software engineering with the creative potential of AI and machine learning. I am passionate about building high-performance, visually compelling applications and am on a personal mission to write 12 million lines of meaningful code.",
-            contact: {
-                email: "coehemang@gmail.com",
-                linkedin: "https://www.linkedin.com/in/coehemang/",
-            },
-            socials: {
-                linkedin: "https://www.linkedin.com/in/coehemang/",
-                // Add more here when available
-            },
-            skills: {
-                "Programming Languages": ["Java", "C++", "C", "Python", "JavaScript"],
-                "Web Technologies": ["MERN Stack (MongoDB, Express, React, Node.js)", "HTML5", "CSS3"],
-                "Core Competencies": ["AI/ML", "Data Science", "Research Skills", "GaN (Generative Adversarial Networks)"],
-                "Software Development": ["Full Stack Web Development", "Object-Oriented Programming"],
-                "Databases": ["SQL (Advanced)"],
-            },
-            experience: [
-                {
-                    role: "Research Intern",
-                    company: "Defence Research and Development Organisation (DRDO)",
-                    duration: "June 2025 – Present",
-                    description: "Engaged in the GANxART project, focusing on the application of Generative Adversarial Networks in creative and artistic domains.",
-                }
-            ],
-            education: [
-                {
-                    degree: "BS in Data Science and Applications",
-                    institution: "IIT Madras, India",
-                    duration: "2023 – 2027",
-                },
-                {
-                    degree: "BE in Computer Science & Information Technology",
-                    institution: "MBM University, Jodhpur",
-                    duration: "2023 – 2027",
-                },
-            ],
-            certifications: [
-                "Amazon Introduction to Software Development",
-                "SQL (Advanced)",
-                "Introduction to SQL",
-                "Certificate of Excellence in Basic Java",
-                "Full Stack Web Development"
-            ],
-            publications: [
-                { title: "Crushader Issue 1", context: "Contributor" },
-                { title: "Tips for Beginners in Code", context: "Author" }
-            ],
-            languages: [
-                { lang: "Hindi", proficiency: "Native / Bilingual" },
-                { lang: "English", proficiency: "Professional Working" }
-            ],
-            availability: "Available for challenging internships and collaborative projects. Open to opportunities starting immediately.",
-            references: "Available upon request.",
-            achievements: ["Currently preparing for a long-term goal of writing 12 million lines of code."],
-        };
+    // --- THREE.JS CONTROLLER ---
+    class WebGLController {
+        constructor() {
+            this.scene = new THREE.Scene();
+            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            this.mouse = new THREE.Vector2(0, 0);
+            this.targetMouse = new THREE.Vector2(0, 0);
+            this.portraitMesh = null;
+            this.clock = new THREE.Clock();
+        }
 
-        // --- THREE.JS CONTROLLER ---
-        let webglController;
-        try {
-            webglController = {
-                scene: new THREE.Scene(),
-                camera: new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000),
-                renderer: new THREE.WebGLRenderer({ antialias: true, alpha: true }),
-                mouse: new THREE.Vector2(0, 0),
-                targetMouse: new THREE.Vector2(0, 0),
-                portraitMesh: null,
-                clock: new THREE.Clock(),
+        init() {
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.getElementById('webgl-canvas').appendChild(this.renderer.domElement);
+            this.camera.position.z = 2.5;
 
-                init() {
-                    this.renderer.setSize(window.innerWidth, window.innerHeight);
-                    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                    document.getElementById('webgl-canvas').appendChild(this.renderer.domElement);
-                    this.camera.position.z = 2;
-
-                    const textureLoader = new THREE.TextureLoader();
-                    textureLoader.load(
-                        'https://i.ibb.co/jZxwXR2Y/1759419391197.png',
-                        (texture) => {
-                            this.createPortrait(texture);
-                            document.getElementById('preloader').classList.add('hidden');
-                        },
-                        undefined,
-                        (err) => {
-                            console.error('An error happened loading the texture.', err);
-                            this.handleError();
-                        }
-                    );
-                    
-                    window.addEventListener('resize', this.onWindowResize.bind(this));
-                    window.addEventListener('mousemove', this.onMouseMove.bind(this));
-                    this.animate();
-                },
-                
-                handleError() {
-                    document.getElementById('webgl-canvas').style.display = 'none';
-                    document.getElementById('webgl-fallback').style.display = 'block';
+            const textureLoader = new THREE.TextureLoader();
+            textureLoader.load(
+                'https://i.ibb.co/jZxwXR2Y/1759419391197.png',
+                (texture) => {
+                    this.createPortrait(texture);
                     document.getElementById('preloader').classList.add('hidden');
                 },
+                undefined,
+                (err) => { this.handleError(err); }
+            );
+            
+            window.addEventListener('resize', this.onWindowResize.bind(this));
+            window.addEventListener('mousemove', this.onMouseMove.bind(this));
+            this.animate();
+        }
+        
+        handleError(err) {
+            console.error('WebGL Texture Error:', err);
+            document.getElementById('webgl-canvas').style.display = 'none';
+            document.getElementById('webgl-fallback').style.display = 'block';
+            document.getElementById('preloader').classList.add('hidden');
+        }
 
-                createPortrait(texture) {
-                    const geometry = new THREE.PlaneGeometry(2.5, 2.5, 128, 128);
-                    const material = new THREE.ShaderMaterial({
-                        uniforms: {
-                            uTime: { value: 0 },
-                            uTexture: { value: texture },
-                            uMouse: { value: new THREE.Vector2(0, 0) },
-                            uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
-                        },
-                        vertexShader: `
-                            varying vec2 vUv;
-                            uniform float uTime;
-                            uniform vec2 uMouse;
-                            void main() {
-                                vUv = uv;
-                                vec3 pos = position;
-                                float dist = distance(uv, uMouse);
-                                pos.z += sin(dist * 10.0 - uTime * 2.0) * 0.05;
-                                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-                            }
-                        `,
-                        fragmentShader: `
-                            uniform sampler2D uTexture;
-                            uniform float uTime;
-                            varying vec2 vUv;
-                            void main() {
-                                vec2 uv = vUv;
-                                float time = uTime * 0.5;
-                                vec4 color = texture2D(uTexture, uv);
-                                
-                                // Scanline
-                                float scanline = sin(uv.y * 800.0 - time * 10.0) * 0.02;
-                                color.rgb -= scanline;
-                                
-                                // Glitch
-                                float glitch = texture2D(uTexture, vec2(uv.x + sin(uv.y * 20.0 + time) * 0.02, uv.y)).r;
-                                color.r += glitch * 0.1;
-                                
-                                gl_FragColor = color;
-                            }
-                        `
-                    });
-                    this.portraitMesh = new THREE.Mesh(geometry, material);
-                    this.scene.add(this.portraitMesh);
+        createPortrait(texture) {
+            const geometry = new THREE.PlaneGeometry(3, 3, 128, 128);
+            const material = new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: { value: 0 },
+                    uTexture: { value: texture },
+                    uMouse: { value: new THREE.Vector2(0, 0) },
+                    uVibrance: { value: 0.0 }
                 },
-
-                onWindowResize() {
-                    this.camera.aspect = window.innerWidth / window.innerHeight;
-                    this.camera.updateProjectionMatrix();
-                    this.renderer.setSize(window.innerWidth, window.innerHeight);
-                    if (this.portraitMesh) {
-                        this.portraitMesh.material.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+                vertexShader: `
+                    varying vec2 vUv;
+                    uniform float uTime;
+                    uniform vec2 uMouse;
+                    uniform float uVibrance;
+                    void main() {
+                        vUv = uv;
+                        vec3 pos = position;
+                        float dist = distance(uv, vec2(0.5, 0.5));
+                        float wave = sin(dist * 15.0 - uTime * 2.0) * 0.05;
+                        pos.z += wave * uVibrance;
+                        pos.x += uMouse.x * 0.15;
+                        pos.y += uMouse.y * 0.15;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
                     }
-                },
-                
-                onMouseMove(event) {
-                    this.targetMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-                    this.targetMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-                },
+                `,
+                fragmentShader: `
+                    uniform sampler2D uTexture;
+                    uniform float uTime;
+                    varying vec2 vUv;
+                    void main() {
+                        vec2 uv = vUv;
+                        float time = uTime * 0.2;
+                        
+                        float r = texture2D(uTexture, vec2(uv.x + 0.01 * sin(uv.y * 20.0 + time), uv.y)).r;
+                        float g = texture2D(uTexture, uv).g;
+                        float b = texture2D(uTexture, vec2(uv.x - 0.01 * sin(uv.y * 20.0 + time), uv.y)).b;
 
-                animate() {
-                    requestAnimationFrame(this.animate.bind(this));
-                    const elapsedTime = this.clock.getElapsedTime();
-                    
-                    // Lerp mouse for smooth movement
-                    this.mouse.x += (this.targetMouse.x * 0.5 - this.mouse.x) * 0.05;
-                    this.mouse.y += (this.targetMouse.y * 0.5 - this.mouse.y) * 0.05;
-
-                    if (this.portraitMesh) {
-                        this.portraitMesh.material.uniforms.uTime.value = elapsedTime;
-                        this.portraitMesh.material.uniforms.uMouse.value.set(this.mouse.x, this.mouse.y);
+                        vec4 color = vec4(r, g, b, 1.0);
+                        
+                        float scanline = sin(vUv.y * 600.0) * 0.03;
+                        color.rgb -= scanline;
+                        
+                        gl_FragColor = color;
                     }
-                    this.renderer.render(this.scene, this.camera);
+                `,
+                transparent: true,
+            });
+            this.portraitMesh = new THREE.Mesh(geometry, material);
+            this.scene.add(this.portraitMesh);
+        }
+
+        onWindowResize() {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        onMouseMove(event) {
+            if (IS_REDUCED_MOTION) return;
+            this.targetMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.targetMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        animate() {
+            requestAnimationFrame(this.animate.bind(this));
+            const elapsedTime = this.clock.getElapsedTime();
+            
+            this.mouse.x += (this.targetMouse.x - this.mouse.x) * 0.05;
+            this.mouse.y += (this.targetMouse.y - this.mouse.y) * 0.05;
+
+            if (this.portraitMesh) {
+                this.portraitMesh.material.uniforms.uTime.value = elapsedTime;
+                this.portraitMesh.material.uniforms.uMouse.value.set(this.mouse.x, this.mouse.y);
+            }
+            this.renderer.render(this.scene, this.camera);
+        }
+        
+        triggerVibration() {
+            if (IS_REDUCED_MOTION || !this.portraitMesh) return;
+            gsap.to(this.portraitMesh.material.uniforms.uVibrance, { value: 1.0, duration: 0.2, ease: 'power2.inOut', yoyo: true, repeat: 1 });
+        }
+    }
+
+    // --- TERMINAL CONTROLLER ---
+    class TerminalController {
+        constructor(webgl) {
+            this.webgl = webgl;
+            this.input = document.getElementById('command-input');
+            this.outputContainer = document.getElementById('output-container');
+            this.commandHistory = [];
+            this.historyIndex = -1;
+        }
+
+        init() {
+            this.loadTheme();
+            this.input.addEventListener('keydown', this.handleInput.bind(this));
+            document.body.addEventListener('click', () => this.input.focus());
+            this.typeCommand('whoami', true);
+        }
+
+        handleInput(e) {
+            if (e.key === 'Enter') {
+                this.webgl.triggerVibration();
+                const command = this.input.value.trim();
+                if (command) {
+                    this.commandHistory.push(command);
+                    this.historyIndex = this.commandHistory.length;
+                    this.processCommand(command);
                 }
-            };
-            webglController.init();
-        } catch (e) {
-            console.error("WebGL initialization failed.", e);
-            if (webglController) webglController.handleError();
-            else {
-                 document.getElementById('webgl-canvas').style.display = 'none';
-                 document.getElementById('webgl-fallback').style.display = 'block';
-                 document.getElementById('preloader').classList.add('hidden');
+                this.input.value = '';
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    this.input.value = this.commandHistory[this.historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (this.historyIndex < this.commandHistory.length - 1) {
+                    this.historyIndex++;
+                    this.input.value = this.commandHistory[this.historyIndex];
+                } else {
+                    this.historyIndex = this.commandHistory.length;
+                    this.input.value = '';
+                }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                // Autocomplete logic could go here
             }
         }
         
+        async processCommand(input) {
+            const [command, ...args] = input.toLowerCase().split(' ').filter(Boolean);
+            const historyHtml = `<div class="input-line-history"><span class="prompt-symbol">HMG_OS &gt;</span><span>${input}</span></div>`;
 
-        // --- AUDIO CONTROLLER ---
-        const audioController = {
-            sounds: {
-                keypress: document.getElementById('audio-keypress'),
-                enter: document.getElementById('audio-enter'),
-                error: document.getElementById('audio-error'),
-            },
-            play(sound) {
-                if (this.sounds[sound]) {
-                    this.sounds[sound].currentTime = 0;
-                    this.sounds[sound].play().catch(e => {});
-                }
+            let output;
+            if (command in COMMANDS) {
+                output = COMMANDS[command](args, this);
+            } else {
+                output = `<div style="color:var(--theme-error)">Error: Command not found: '${command}'. Type 'help' for a list of commands.</div>`;
             }
-        };
-
-        // --- TERMINAL CONTROLLER ---
-        const terminalController = {
-            input: document.getElementById('command-input'),
-            outputContainer: document.getElementById('output-container'),
-            commandHistory: [],
-            historyIndex: -1,
-
-            init() {
-                this.input.addEventListener('keydown', this.handleInput.bind(this));
-                document.addEventListener('click', () => this.input.focus());
-                this.typeCommand('help', true);
-            },
-
-            handleInput(e) {
-                audioController.play('keypress');
-                if (e.key === 'Enter') {
-                    audioController.play('enter');
-                    const command = this.input.value.trim();
-                    if (command) {
-                        this.commandHistory.push(command);
-                        this.historyIndex = this.commandHistory.length;
-                        this.processCommand(command);
-                    }
-                    this.input.value = '';
-                } else if (e.key === 'ArrowUp') {
-                    if (this.historyIndex > 0) {
-                        this.historyIndex--;
-                        this.input.value = this.commandHistory[this.historyIndex];
-                        e.preventDefault();
-                    }
-                } else if (e.key === 'ArrowDown') {
-                    if (this.historyIndex < this.commandHistory.length - 1) {
-                        this.historyIndex++;
-                        this.input.value = this.commandHistory[this.historyIndex];
-                    } else {
-                        this.historyIndex = this.commandHistory.length;
-                        this.input.value = '';
-                    }
-                }
-            },
-
-            processCommand(input) {
-                const [command, ...args] = input.toLowerCase().split(' ');
-                const historyHtml = `
-                    <div class="input-line-history">
-                        <span class="prompt-symbol">HMG_OS &gt;</span>
-                        <span>${input}</span>
-                    </div>`;
-
-                if (command in commands) {
-                    const output = commands[command](args);
-                    this.renderOutput(historyHtml, output);
-                } else {
-                    const output = `<div style="color:var(--color-error)">Error: Command not found: '${command}'. Type 'help' for a list of commands.</div>`;
-                    this.renderOutput(historyHtml, output);
-                    audioController.play('error');
-                }
-            },
             
-            async typeCommand(command, isInstant = false) {
-                if (isInstant) {
-                    this.processCommand(command);
-                    return;
-                }
-
-                for (let i = 0; i < command.length; i++) {
-                    this.input.value += command.charAt(i);
-                    await new Promise(resolve => setTimeout(resolve, 100));
-                }
-                await new Promise(resolve => setTimeout(resolve, 500));
-                this.processCommand(this.input.value);
-                this.input.value = '';
-            },
-
-            renderOutput(historyHtml, outputHtml) {
-                const card = document.createElement('div');
-                card.classList.add('output-card');
-                card.innerHTML = historyHtml + `<div class="output-content">${outputHtml}</div>`;
-                this.outputContainer.appendChild(card);
-                
-                gsap.fromTo(card, 
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.5, ease: 'power4.out' }
-                );
-                
-                this.outputContainer.scrollTop = this.outputContainer.scrollHeight;
-                
-                // Add micro-interactions to new links
-                const links = card.querySelectorAll('a');
-                links.forEach(link => {
-                    anime({
-                        targets: link,
-                        color: ['var(--color-primary)', 'var(--color-accent)'],
-                        duration: 300,
-                        easing: 'easeInOutSine',
-                        direction: 'alternate',
-                        loop: true,
-                        delay: anime.random(500, 1500)
-                    });
-                });
+            if (output) this.renderOutput(historyHtml, await output);
+        }
+        
+        async typeCommand(command, isInstant = false) {
+            if (isInstant) {
+                this.processCommand(command);
+                return;
             }
-        };
+            // Typing simulation logic can be added here if desired
+        }
 
-        // --- COMMANDS DEFINITION ---
-        const commands = {
-            help: () => `
-                <h2>Command Directory [HMG_OS v1.0]</h2>
-                <p>Welcome to my interactive dossier. All data is sourced from my personal records. Use the commands below to navigate.</p>
-                <ul>
-                    <li><strong>whoami</strong> - Displays my professional summary.</li>
-                    <li><strong>experience</strong> - Details my work experience.</li>
-                    <li><strong>skills</strong> - Lists my technical skill set.</li>
-                    <li><strong>education</strong> - Shows my educational background.</li>
-                    <li><strong>projects</strong> - (Coming Soon) Showcases my project portfolio.</li>
-                    <li><strong>certifications</strong> - Lists my professional certifications.</li>
-                    <li><strong>publications</strong> - My published works.</li>
-                    <li><strong>languages</strong> - Languages I speak.</li>
-                    <li><strong>contact</strong> - How to get in touch.</li>
-                    <li><strong>socials</strong> - My social media presence.</li>
-                    <li><strong>availability</strong> - My current work availability.</li>
-                    <li><strong>references</strong> - Information on references.</li>
-                    <li><strong>mantra</strong> - My guiding principle.</li>
-                    <li><strong>theme [neon|monochrome]</strong> - Toggles the UI theme.</li>
-                    <li><strong>art</strong> - Information about the background visual.</li>
-                    <li><strong>download</strong> - (Coming Soon) Get a PDF version of my resume.</li>
-                    <li><strong>clear</strong> - Clears the terminal screen.</li>
-                </ul>
-            `,
-            whoami: () => `<h2>Identity Profile</h2><p>${RESUME_DATA.whoami}</p><h3>Headline</h3><p>${RESUME_DATA.headline}</p>`,
-            experience: () => `<h2>Work Experience</h2>` + RESUME_DATA.experience.map(e => `<h3>${e.role} @ ${e.company}</h3><strong>Duration:</strong> ${e.duration}<br><p>${e.description}</p>`).join(''),
-            skills: () => `<h2>Skill Matrix</h2>` + Object.entries(RESUME_DATA.skills).map(([category, skills]) => `<h3>${category}</h3><ul>${skills.map(s => `<li>${s}</li>`).join('')}</ul>`).join(''),
-            education: () => `<h2>Education</h2>` + RESUME_DATA.education.map(e => `<h3>${e.degree}</h3><p>${e.institution} (${e.duration})</p>`).join(''),
-            projects: () => `<p>The 'projects' module is currently under development. Please check back later.</p>`,
-            certifications: () => `<h2>Certifications</h2><ul>${RESUME_DATA.certifications.map(c => `<li>${c}</li>`).join('')}</ul>`,
-            publications: () => `<h2>Publications</h2><ul>${RESUME_DATA.publications.map(p => `<li>${p.title} (${p.context})</li>`).join('')}</ul>`,
-            languages: () => `<h2>Languages</h2><ul>${RESUME_DATA.languages.map(l => `<li>${l.lang} - <strong>${l.proficiency}</strong></li>`).join('')}</ul>`,
-            contact: () => `<h2>Contact Channels</h2><ul><li>Email: <a href="mailto:${RESUME_DATA.contact.email}">${RESUME_DATA.contact.email}</a></li><li>LinkedIn: <a href="${RESUME_DATA.contact.linkedin}" target="_blank">${RESUME_DATA.contact.linkedin}</a></li></ul>`,
-            socials: () => `<h2>Social Network Links</h2><ul>` + Object.entries(RESUME_DATA.socials).map(([platform, url]) => `<li>${platform.charAt(0).toUpperCase() + platform.slice(1)}: <a href="${url}" target="_blank">${url}</a></li>`).join('') + `</ul>`,
-            availability: () => `<h2>Availability Status</h2><p style="color:var(--color-success)">${RESUME_DATA.availability}</p>`,
-            references: () => `<h2>References</h2><p>${RESUME_DATA.references}</p>`,
-            mantra: () => `<h2>Mantra</h2><p><em>"${RESUME_DATA.mantra}"</em></p>`,
-            art: () => `<h2>Art Engine</h2><p>The background is a real-time WebGL portrait rendered with Three.js. It uses custom GLSL shaders to create reactive displacement, scanlines, and glitch effects based on your cursor's position. It is designed to be a living piece of digital art representing the fusion of code and creativity.</p>`,
-            download: () => `<p>The 'download' module is not yet implemented. A PDF version of this resume will be available soon.</p>`,
-            theme: (args) => {
-                if (args === 'neon' || args === 'monochrome') {
-                    document.body.className = `theme-${args[0]}`;
-                    return `<p style="color:var(--color-success)">Theme changed to ${args[0]}.</p>`;
+        renderOutput(historyHtml, outputHtml) {
+            const card = document.createElement('div');
+            card.className = 'output-card';
+            card.innerHTML = historyHtml + `<div class="output-content">${outputHtml}</div>`;
+            this.outputContainer.appendChild(card);
+            
+            const animationProps = IS_REDUCED_MOTION 
+                ? { opacity: 1, y: 0, duration: 0 }
+                : { opacity: 1, y: 0, duration: 0.5, ease: 'power4.out' };
+            
+            gsap.fromTo(card, { opacity: 0, y: 20 }, animationProps);
+            
+            this.outputContainer.scrollTop = this.outputContainer.scrollHeight;
+            
+            card.querySelectorAll('a').forEach(link => {
+                link.addEventListener('mouseenter', () => anime({ targets: link, filter: 'brightness(1.5)', duration: 300 }));
+                link.addEventListener('mouseleave', () => anime({ targets: link, filter: 'brightness(1.0)', duration: 300 }));
+            });
+        }
+        
+        setTheme(themeName) {
+            const validThemes = ['neon', 'monochrome', 'dusk', 'noir'];
+            if (validThemes.includes(themeName)) {
+                document.body.dataset.theme = themeName;
+                try {
+                    localStorage.setItem('terminalTheme', themeName);
+                } catch(e) {
+                    console.warn("Could not save theme to localStorage.");
                 }
-                return `<p style="color:var(--color-error)">Usage: theme [neon|monochrome]</p>`;
-            },
-            clear: () => {
-                terminalController.outputContainer.innerHTML = '';
-                return `Screen cleared.`;
+                return `<p style="color:var(--theme-success)">Theme set to ${themeName}.</p>`;
             }
-        };
+            return `<p style="color:var(--theme-error)">Invalid theme. Available: ${validThemes.join(', ')}</p>`;
+        }
+        
+        loadTheme() {
+            try {
+                const savedTheme = localStorage.getItem('terminalTheme');
+                if (savedTheme) this.setTheme(savedTheme);
+            } catch (e) { /* localStorage not available */ }
+        }
+    }
 
-        // --- INITIALIZE ---
-        terminalController.init();
+    // --- COMMANDS DEFINITION ---
+    const COMMANDS = {
+        help: () => `
+            <h2>Command Directory [HMG_OS v2.0]</h2>
+            <p>Welcome to my interactive dossier. Use the commands below to navigate.</p>
+            <ul>
+                <li><strong>whoami</strong> - Professional summary.</li>
+                <li><strong>experience</strong> - Work experience.</li>
+                <li><strong>skills</strong> - Technical skill set.</li>
+                <li><strong>education</strong> - Educational background.</li>
+                <li><strong>certifications</strong> - Professional certifications.</li>
+                <li><strong>publications</strong> - Published works.</li>
+                <li><strong>languages</strong> - Languages I speak.</li>
+                <li><strong>achievements</strong> - Key accomplishments.</li>
+                <li><strong>projects</strong> - (Coming Soon) Project portfolio.</li>
+                <li><strong>contact</strong> - How to get in touch.</li>
+                <li><strong>socials</strong> - Social media links.</li>
+                <li><strong>availability</strong> - Current work availability.</li>
+                <li><strong>references</strong> - Information on references.</li>
+                <li><strong>mantra</strong> - My guiding principle.</li>
+                <li><strong>theme [name]</strong> - Cycles UI theme. Try: neon, monochrome, dusk, noir.</li>
+                <li><strong>art</strong> - Info about the background visual.</li>
+                <li><strong>download</strong> - (Coming Soon) Get a PDF resume.</li>
+                <li><strong>clear</strong> - Clears the terminal screen.</li>
+            </ul>
+        `,
+        whoami: () => `<h2>Identity Profile</h2><p>${RESUME_DATA.whoami}</p><h3>Headline</h3><p>${RESUME_DATA.headline}</p>`,
+        experience: () => `<h2>Experience Log</h2>` + RESUME_DATA.experience.map(e => `<h3>${e.role} @ ${e.company}</h3><strong>Duration:</strong> ${e.duration}<br><p>${e.description}</p>`).join(''),
+        skills: () => `<h2>Skill Matrix</h2>` + Object.entries(RESUME_DATA.skills).map(([category, skills]) => `<h3>${category}</h3><p>${skills.join(', ')}</p>`).join(''),
+        education: () => `<h2>Education Record</h2>` + RESUME_DATA.education.map(e => `<h3>${e.degree}</h3><p>${e.institution} (${e.duration})</p>`).join(''),
+        certifications: () => `<h2>Certifications</h2><ul>${RESUME_DATA.certifications.map(c => `<li>${c}</li>`).join('')}</ul>`,
+        publications: () => `<h2>Publications</h2><ul>${RESUME_DATA.publications.map(p => `<li>${p.title} <strong>(${p.context})</strong></li>`).join('')}</ul>`,
+        languages: () => `<h2>Languages</h2><ul>${RESUME_DATA.languages.map(l => `<li>${l.lang} - <strong>${l.proficiency}</strong></li>`).join('')}</ul>`,
+        achievements: () => `<h2>Achievements</h2><ul>${RESUME_DATA.achievements.map(a => `<li>${a}</li>`).join('')}</ul>`,
+        projects: () => `<p>The 'projects' module is under construction. Please check back later.</p>`,
+        contact: () => `<h2>Contact Channels</h2><ul><li>Email: <a href="mailto:${RESUME_DATA.contact.email}">${RESUME_DATA.contact.email}</a></li><li>LinkedIn: <a href="${RESUME_DATA.contact.linkedin}" target="_blank">linkedin.com/in/coehemang</a></li></ul>`,
+        socials: () => `<h2>Social Network</h2><ul>` + Object.entries(RESUME_DATA.socials).map(([platform, url]) => `<li>${platform.charAt(0).toUpperCase() + platform.slice(1)}: <a href="${url}" target="_blank">${url}</a></li>`).join('') + `</ul>`,
+        availability: () => `<h2>Availability</h2><p style="color:var(--theme-success)">${RESUME_DATA.availability}</p>`,
+        references: () => `<h2>References</h2><p>${RESUME_DATA.references}</p>`,
+        mantra: () => `<h2>Mantra</h2><p><em>"${RESUME_DATA.mantra}"</em></p>`,
+        art: () => `<h2>Art Engine</h2><p>The background is a real-time WebGL portrait rendered with Three.js. It uses custom GLSL shaders for reactive displacement and chromatic aberration based on cursor position. It represents the fusion of code and creativity.</p>`,
+        download: () => `<p>The 'download' module is not yet implemented.</p>`,
+        theme: (args, terminal) => {
+            if (args.length > 0) return terminal.setTheme(args);
+            const themes = ['neon', 'monochrome', 'dusk', 'noir'];
+            const currentTheme = document.body.dataset.theme || 'neon';
+            const nextIndex = (themes.indexOf(currentTheme) + 1) % themes.length;
+            return terminal.setTheme(themes[nextIndex]);
+        },
+        clear: (args, terminal) => { terminal.outputContainer.innerHTML = ''; return null; }
+    };
+
+    // --- INITIALIZE ---
+
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const webgl = new WebGLController();
+            webgl.init();
+            const terminal = new TerminalController(webgl);
+            terminal.init();
+        } catch (e) {
+            console.error("Initialization failed.", e);
+            document.getElementById('webgl-canvas').style.display = 'none';
+            document.getElementById('webgl-fallback').style.display = 'block';
+            document.getElementById('preloader').classList.add('hidden');
+        }
     });
     </script>
 </body>
