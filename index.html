@@ -3,29 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hemang's Dossier | Web3 Terminal</title>
-    <meta name="author" content="Hemang">
-    <meta name="description" content="Hemang's interactive Web3 resume terminal. A fusion of Swiss design, Three.js artistry, and command-line interface.">
-    <meta name="keywords" content="Hemang, Resume, Portfolio, Web3, Three.js, GSAP, Developer, Data Science, AI, ML, GAN, IIT Madras, MBMU">
-    
+    <title>Hemang :: Web3 Dossier</title>
+    <meta name="description" content="A web3-grade resume world for Hemang, fusing Swiss design with high-energy shader artistry.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Unica+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUokApNvOOTPcv3jssIZVGJscVzaGiyAP7bFl8NUsxdcddsErpaODZvGOIe5yGtLeIyTWcEg1dClWP6fsHHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" integrity="sha512-Ic9xkERjyZqIiGHLWYRE0vAFdQGt/IOpCnuaomVJIZ/1lIOPioMiGQ4giqdcZccaOg2CiAccLaNm1kG_0BUAACg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
     <style>
         :root {
-            --font-primary: 'Roboto Mono', monospace;
-            --font-display: 'Unica One', cursive;
-            --grid-unit: 8px;
-            --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+            --font-primary: 'Inter', sans-serif;
+            --font-mono: 'Source Code Pro', monospace;
+            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+            /* Neon Theme (Default) */
+            --color-bg: #0a0a0f;
+            --color-text: #e0e0e0;
+            --color-primary: #00f0ff;
+            --color-secondary: #ff00ff;
+            --color-accent: #f0ff00;
+            --color-error: #ff4d4d;
+            --color-success: #4dff88;
+            --glass-bg: rgba(16, 16, 24, 0.6);
+            --glass-border: rgba(0, 240, 255, 0.2);
+            --grid-line-color: rgba(0, 240, 255, 0.08);
+            --shadow-glow: 0 0 15px rgba(0, 240, 255, 0.2), 0 0 30px rgba(0, 240, 255, 0.1);
         }
 
-        /* Base styles & Resets */
+        body.theme-monochrome {
+            --color-bg: #f0f0f0;
+            --color-text: #1a1a1a;
+            --color-primary: #000000;
+            --color-secondary: #555555;
+            --color-accent: #0000ff;
+            --color-error: #d90000;
+            --color-success: #008a00;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --grid-line-color: rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -36,589 +57,381 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            background-color: var(--color-bg);
+            color: var(--color-text);
             font-family: var(--font-primary);
-            color: var(--text-color);
-            background-color: var(--bg-color);
+            font-size: 16px;
         }
 
-        body.theme-neon {
-            --bg-color: #03000d;
-            --text-color: #d4d4d8;
-            --primary-glow: #00f0ff;
-            --secondary-glow: #ff00ff;
-            --accent-color: #00f0ff;
-            --glass-bg: rgba(16, 16, 48, 0.25);
-            --glass-border: rgba(0, 240, 255, 0.3);
-            --grid-line-color: rgba(0, 240, 255, 0.1);
-            --link-color: #00f0ff;
-            --link-hover-color: #ffffff;
-            --success-color: #00ff8c;
-            --error-color: #ff4d4d;
-        }
-
-        body.theme-swiss {
-            --bg-color: #f4f4f4;
-            --text-color: #111111;
-            --primary-glow: #111111;
-            --secondary-glow: #d90429;
-            --accent-color: #d90429;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --glass-border: rgba(17, 17, 17, 0.2);
-            --grid-line-color: rgba(17, 17, 17, 0.1);
-            --link-color: #d90429;
-            --link-hover-color: #000000;
-            --success-color: #0d8744;
-            --error-color: #d90429;
-        }
-
-        body.theme-dusk {
-            --bg-color: #1a1a2e;
-            --text-color: #e0e0e0;
-            --primary-glow: #e94560;
-            --secondary-glow: #0f3460;
-            --accent-color: #e94560;
-            --glass-bg: rgba(25, 25, 60, 0.3);
-            --glass-border: rgba(233, 69, 96, 0.4);
-            --grid-line-color: rgba(233, 69, 96, 0.15);
-            --link-color: #e94560;
-            --link-hover-color: #ffffff;
-            --success-color: #50c878;
-            --error-color: #e94560;
-        }
-
-        body.theme-noir {
-            --bg-color: #000000;
-            --text-color: #a0a0a0;
-            --primary-glow: #ffffff;
-            --secondary-glow: #555555;
-            --accent-color: #ffffff;
-            --glass-bg: rgba(20, 20, 20, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --grid-line-color: rgba(255, 255, 255, 0.1);
-            --link-color: #ffffff;
-            --link-hover-color: #cccccc;
-            --success-color: #cccccc;
-            --error-color: #ff6b6b;
-        }
-
-        #app-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            isolation: isolate;
-        }
-        
         #webgl-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            outline: none;
             z-index: 1;
         }
-
-        #fallback-container {
+        
+        #webgl-fallback {
             display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-image: url('https://i.ibb.co/jZxwXR2Y/1759419391197.png');
+            background-size: cover;
+            border: 2px solid var(--color-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        #preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #03000d;
-            color: #d4d4d8;
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-family: var(--font-primary);
-        }
-
-        .no-webgl #fallback-container {
+            background: var(--color-bg);
+            z-index: 1000;
             display: flex;
-            flex-direction: column;
-        }
-
-        .fallback-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 2px solid #00f0ff;
-            margin-bottom: 2rem;
-        }
-
-        #ui-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            display: grid;
-            grid-template-rows: 1fr auto;
-            pointer-events: none;
-            overflow-y: auto;
-            scrollbar-width: none; /* Firefox */
-        }
-        #ui-container::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
-        }
-
-        #terminal-output {
-            padding: calc(var(--grid-unit) * 4);
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: calc(var(--grid-unit) * 3);
-            align-content: start;
-        }
-
-        .log-card {
-            grid-column: 2 / span 10;
-            margin-bottom: calc(var(--grid-unit) * 2);
-            padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 3);
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--grid-unit);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            font-size: 1rem;
-            line-height: 1.6;
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: auto;
-        }
-
-        @media (min-width: 768px) {
-            .log-card {
-                grid-column: 3 / span 8;
-            }
-        }
-        @media (min-width: 1200px) {
-            .log-card {
-                grid-column: 4 / span 6;
-            }
-        }
-
-        .log-card.log-input {
-            color: var(--accent-color);
-        }
-        .log-card.log-input .prompt {
-            user-select: none;
-        }
-        .log-card.log-error {
-            color: var(--error-color);
-            border-color: var(--error-color);
-        }
-        .log-card.log-success {
-            color: var(--success-color);
-        }
-
-        .log-card h1, .log-card h2, .log-card h3 {
-            font-family: var(--font-display);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: calc(var(--grid-unit) * 2);
-            color: var(--accent-color);
-            text-shadow: 0 0 5px var(--primary-glow);
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            color: var(--color-primary);
+            font-size: 1.2rem;
+            opacity: 1;
+            transition: opacity 0.5s var(--ease-out-quart);
         }
         
-        .log-card h1 { font-size: 2rem; }
-        .log-card h2 { font-size: 1.5rem; }
-        .log-card h3 { font-size: 1.2rem; }
+        #preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-        .log-card a {
-            color: var(--link-color);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: color 0.3s var(--ease-out-quart), border-color 0.3s var(--ease-out-quart);
+        #terminal-container {
             position: relative;
-        }
-        .log-card a:hover, .log-card a:focus {
-            color: var(--link-hover-color);
-            border-bottom-color: var(--link-hover-color);
-            outline: none;
-        }
-        .log-card a::after {
-            content: '↗';
-            font-size: 0.7em;
-            position: relative;
-            top: -0.2em;
-            left: 0.1em;
-        }
-
-        .log-card ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        .log-card li {
-            position: relative;
-            padding-left: calc(var(--grid-unit) * 3);
-            margin-bottom: var(--grid-unit);
-        }
-        .log-card li::before {
-            content: '»';
-            position: absolute;
-            left: 0;
-            color: var(--accent-color);
-        }
-
-        .command-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: var(--grid-unit);
-        }
-        .command-list .command {
-            font-weight: 700;
-            color: var(--accent-color);
-        }
-
-        .skill-list {
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            padding: 2vw;
             display: flex;
-            flex-wrap: wrap;
-            gap: var(--grid-unit);
+            flex-direction: column;
+            background-image:
+                linear-gradient(var(--grid-line-color) 1px, transparent 1px),
+                linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
-        .skill-tag {
-            background-color: var(--glass-border);
-            padding: calc(var(--grid-unit) / 2) var(--grid-unit);
-            border-radius: calc(var(--grid-unit) / 2);
-            font-size: 0.9rem;
+        
+        #output-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 15px; /* for scrollbar */
+        }
+        
+        #output-container::-webkit-scrollbar {
+            width: 4px;
         }
 
-        #terminal-input-line {
+        #output-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #output-container::-webkit-scrollbar-thumb {
+            background-color: var(--color-primary);
+            border-radius: 2px;
+        }
+
+        .output-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-glow);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .input-line-history {
+            margin-bottom: 0.5rem;
+            font-family: var(--font-mono);
+        }
+        
+        .prompt-symbol {
+            color: var(--color-primary);
+            margin-right: 0.5em;
+        }
+        
+        .output-content {
+            font-family: var(--font-primary);
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .output-content h2 {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.5rem;
+        }
+        
+        .output-content h3 {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--color-secondary);
+            margin-top: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .output-content strong {
+            color: var(--color-accent);
+            font-weight: 500;
+        }
+        
+        .output-content a {
+            color: var(--color-primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--color-primary);
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        
+        .output-content a:hover {
+            color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+        
+        .output-content ul {
+            list-style: none;
+            padding-left: 1em;
+        }
+        
+        .output-content li::before {
+            content: '»';
+            color: var(--color-primary);
+            margin-right: 0.75em;
+        }
+
+        #input-line {
             display: flex;
             align-items: center;
-            padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 4);
-            background: rgba(0,0,0,0.5);
-            pointer-events: auto;
-        }
-
-        @media (min-width: 768px) {
-             #terminal-input-line {
-                padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 16);
-            }
-        }
-        @media (min-width: 1200px) {
-             #terminal-input-line {
-                padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 24);
-            }
-        }
-
-        #terminal-input-line .prompt {
-            color: var(--accent-color);
-            margin-right: var(--grid-unit);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        #terminal-input {
-            flex-grow: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--text-color);
-            font-family: var(--font-primary);
+            font-family: var(--font-mono);
             font-size: 1.1rem;
-            caret-color: var(--accent-color);
+            margin-top: 1rem;
+        }
+        
+        #command-input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            color: var(--color-text);
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+        }
+        
+        #command-input::placeholder {
+            color: rgba(224, 224, 224, 0.4);
+        }
+        
+        body.theme-monochrome #command-input::placeholder {
+            color: rgba(26, 26, 26, 0.4);
         }
 
-        .hidden {
-            display: none;
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
         }
     </style>
 </head>
-<body class="theme-neon">
-    <!-- This HTML file serves as a self-contained application. -->
-    <!-- For a full repository setup, include: -->
-    <!-- README.md: Detailed project overview, setup instructions, and command list. -->
-    <!-- LICENSE: MIT License file. -->
-
-    <div id="app-container">
-        <canvas id="webgl-canvas"></canvas>
-        
-        <div id="fallback-container">
-            <img src="https://i.ibb.co/jZxwXR2Y/1759419391197.png" alt="Hemang's Profile Picture" class="fallback-img"/>
-            <h1>Hemang's Dossier</h1>
-            <p>Please enable JavaScript and WebGL to view this interactive experience.</p>
-        </div>
-
-        <div id="ui-container" role="log" aria-live="polite">
-            <div id="terminal-output"></div>
-            <div id="terminal-input-line">
-                <span class="prompt" aria-hidden="true">&gt;</span>
-                <input type="text" id="terminal-input" aria-label="Command input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus>
-            </div>
+<body>
+    <div id="preloader">INITIALIZING_DOSSIER...</div>
+    <div id="webgl-canvas"></div>
+    <div id="webgl-fallback"></div>
+    
+    <div id="terminal-container">
+        <div id="output-container"></div>
+        <div id="input-line">
+            <span class="prompt-symbol">HMG_OS &gt;</span>
+            <input type="text" id="command-input" autofocus autocomplete="off" spellcheck="false" placeholder="Type 'help' to start...">
         </div>
     </div>
-
-    <audio id="audio-keypress" src="https://assets.mixkit.co/sfx/preview/mixkit-keyboard-key-hit-1463.mp3" preload="auto"></audio>
-    <audio id="audio-command" src="https://assets.mixkit.co/sfx/preview/mixkit-fast-sci-fi-bleep-902.mp3" preload="auto"></audio>
-    <audio id="audio-error" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
     
+    <audio id="audio-keypress" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-computer-sounds/computer_keyboard_key_press_001.mp3" preload="auto"></audio>
+    <audio id="audio-enter" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-computer-sounds/computer_ui_beep_double_001.mp3" preload="auto"></audio>
+    <audio id="audio-error" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-35328/zapsplat_multimedia_game_sound_error_001_38359.mp3" preload="auto"></audio>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // --- MODULE: DATA ---
-            const data = {
-                name: "Hemang",
-                headline: "Learning Java, C++, C, Python, JavaScript and MERN Stack | BS in DS @ IITM | BE CSIT @ MBMU | AI/ML enthusiast | Preparing to write 12M lines of code",
-                mantra: "Architecting digital realities with code and conviction.",
-                contact: {
-                    email: "coehemang@gmail.com",
-                    linkedin: "https://www.linkedin.com/in/coehemang/",
-                },
-                availability: "Actively seeking challenging internships and research opportunities in AI/ML, Software Development, and Data Science.",
-                references: "Available upon request.",
-                socials: {
-                    linkedin: "https://www.linkedin.com/in/coehemang/",
-                },
-                skills: {
-                    languages: ["Java", "C++", "C", "Python", "JavaScript", "HTML/CSS", "SQL"],
-                    frameworks: ["React.js", "Node.js", "Express.js", "MERN Stack"],
-                    tools: ["Git", "GitHub", "VS Code", "MongoDB", "Figma"],
-                    concepts: ["Data Structures & Algorithms", "Object-Oriented Programming", "Machine Learning", "Artificial Intelligence", "Research Skills", "GaN Technology"]
-                },
-                experience: [
-                    {
-                        role: "Research Intern",
-                        company: "GANxART @ DRDO",
-                        duration: "June 2025 - Present",
-                        description: "Engaged in cutting-edge research projects focusing on Generative Adversarial Networks (GANs) and their applications.",
-                    }
-                ],
-                education: [
-                    {
-                        degree: "BS in Data Science and Applications",
-                        institution: "IIT Madras",
-                        duration: "2023 - 2027",
-                    },
-                    {
-                        degree: "BE in Information Technology",
-                        institution: "MBM University, Jodhpur",
-                        duration: "2023 - 2027",
-                    }
-                ],
-                projects: [
-                    { name: "Portfolio Terminal (This Site)", description: "An interactive Web3-inspired resume built with Three.js, GSAP, and Swiss design principles." },
-                    { name: "AI Art Generator", description: "A project exploring GANs to produce novel artistic images based on textual prompts." },
-                ],
-                certifications: [
-                    "Amazon Introduction to Software Development",
-                    "SQL (Advanced) - HackerRank",
-                    "Introduction to SQL - Kaggle",
-                    "Certificate of Excellence in Basic Java - Coding Ninjas",
-                    "Full Stack Web Development - Internshala"
-                ],
-                publications: [
-                    { title: "Crushader Issue 1", context: "Contributed as a team member to the university magazine." },
-                    { title: "Tips for Beginners in Code", context: "Authored a guide for novice programmers, published on a personal blog." }
-                ],
-                languages: [
-                    { lang: "Hindi", proficiency: "Native/Bilingual" },
-                    { lang: "English", proficiency: "Professional Working" },
-                ],
-                achievements: [
-                    "Maintained a high GPA across dual-degree programs.",
-                    "Active participant in competitive programming contests."
-                ]
-            };
-            
-            // --- MODULE: THEME MANAGER ---
-            const themeManager = {
-                themes: ['neon', 'swiss', 'dusk', 'noir'],
-                currentThemeIndex: 0,
-
-                init() {
-                    const savedTheme = sessionStorage.getItem('terminalTheme');
-                    const savedIndex = this.themes.indexOf(savedTheme);
-                    if (savedIndex !== -1) {
-                        this.currentThemeIndex = savedIndex;
-                    }
-                    this.applyTheme(this.themes[this.currentThemeIndex]);
-                },
-
-                applyTheme(themeName) {
-                    document.body.className = `theme-${themeName}`;
-                    sessionStorage.setItem('terminalTheme', themeName);
-                    // This is where you would update three.js colors
-                    if (window.webglScene && window.webglScene.updateTheme) {
-                        window.webglScene.updateTheme();
-                    }
-                },
-                
-                cycleTheme() {
-                    this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
-                    const newTheme = this.themes[this.currentThemeIndex];
-                    this.applyTheme(newTheme);
-                    return newTheme;
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DATA STORE ---
+        const RESUME_DATA = {
+            name: "Hemang",
+            headline: "Learning Java, C++, C, Python, JavaScript and MERN Stack | BS in DS @ IITM | BE CSIT @ MBMU | AI/ML enthusiast | Preparing to write 12M lines of code",
+            mantra: "Architecting digital realities with Swiss precision and shader artistry. Every line of code is a brushstroke on the canvas of computation.",
+            whoami: "A dual-degree student architecting a future in technology, currently pursuing a BS in Data Science from IIT Madras and a BE in Information Technology from MBMU. My focus is on merging robust software engineering with the creative potential of AI and machine learning. I am passionate about building high-performance, visually compelling applications and am on a personal mission to write 12 million lines of meaningful code.",
+            contact: {
+                email: "coehemang@gmail.com",
+                linkedin: "https://www.linkedin.com/in/coehemang/",
+            },
+            socials: {
+                linkedin: "https://www.linkedin.com/in/coehemang/",
+                // Add more here when available
+            },
+            skills: {
+                "Programming Languages": ["Java", "C++", "C", "Python", "JavaScript"],
+                "Web Technologies": ["MERN Stack (MongoDB, Express, React, Node.js)", "HTML5", "CSS3"],
+                "Core Competencies": ["AI/ML", "Data Science", "Research Skills", "GaN (Generative Adversarial Networks)"],
+                "Software Development": ["Full Stack Web Development", "Object-Oriented Programming"],
+                "Databases": ["SQL (Advanced)"],
+            },
+            experience: [
+                {
+                    role: "Research Intern",
+                    company: "Defence Research and Development Organisation (DRDO)",
+                    duration: "June 2025 – Present",
+                    description: "Engaged in the GANxART project, focusing on the application of Generative Adversarial Networks in creative and artistic domains.",
                 }
-            };
+            ],
+            education: [
+                {
+                    degree: "BS in Data Science and Applications",
+                    institution: "IIT Madras, India",
+                    duration: "2023 – 2027",
+                },
+                {
+                    degree: "BE in Computer Science & Information Technology",
+                    institution: "MBM University, Jodhpur",
+                    duration: "2023 – 2027",
+                },
+            ],
+            certifications: [
+                "Amazon Introduction to Software Development",
+                "SQL (Advanced)",
+                "Introduction to SQL",
+                "Certificate of Excellence in Basic Java",
+                "Full Stack Web Development"
+            ],
+            publications: [
+                { title: "Crushader Issue 1", context: "Contributor" },
+                { title: "Tips for Beginners in Code", context: "Author" }
+            ],
+            languages: [
+                { lang: "Hindi", proficiency: "Native / Bilingual" },
+                { lang: "English", proficiency: "Professional Working" }
+            ],
+            availability: "Available for challenging internships and collaborative projects. Open to opportunities starting immediately.",
+            references: "Available upon request.",
+            achievements: ["Currently preparing for a long-term goal of writing 12 million lines of code."],
+        };
 
-            // --- MODULE: WEBGL SCENE (THREE.JS) ---
-            const webglScene = {
-                scene: null,
-                camera: null,
-                renderer: null,
-                clock: null,
-                gridHelper: null,
-                particles: null,
+        // --- THREE.JS CONTROLLER ---
+        let webglController;
+        try {
+            webglController = {
+                scene: new THREE.Scene(),
+                camera: new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000),
+                renderer: new THREE.WebGLRenderer({ antialias: true, alpha: true }),
+                mouse: new THREE.Vector2(0, 0),
+                targetMouse: new THREE.Vector2(0, 0),
                 portraitMesh: null,
-                mouse: new THREE.Vector2(-1, -1),
-                targetMouse: new THREE.Vector2(-1,-1),
-                
+                clock: new THREE.Clock(),
+
                 init() {
-                    if (!this.isWebGLAvailable()) {
-                        document.body.classList.add('no-webgl');
-                        document.getElementById('ui-container').style.display = 'none';
-                        document.getElementById('webgl-canvas').style.display = 'none';
-                        return;
-                    }
-                    
-                    this.scene = new THREE.Scene();
-                    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                    this.camera.position.z = 5;
-                    this.renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), antialias: true, alpha: true });
                     this.renderer.setSize(window.innerWidth, window.innerHeight);
                     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                    this.clock = new THREE.Clock();
+                    document.getElementById('webgl-canvas').appendChild(this.renderer.domElement);
+                    this.camera.position.z = 2;
 
-                    this.addGrid();
-                    this.addParticles();
-                    this.addPortrait();
+                    const textureLoader = new THREE.TextureLoader();
+                    textureLoader.load(
+                        'https://i.ibb.co/jZxwXR2Y/1759419391197.png',
+                        (texture) => {
+                            this.createPortrait(texture);
+                            document.getElementById('preloader').classList.add('hidden');
+                        },
+                        undefined,
+                        (err) => {
+                            console.error('An error happened loading the texture.', err);
+                            this.handleError();
+                        }
+                    );
                     
-                    window.addEventListener('resize', this.onResize.bind(this));
+                    window.addEventListener('resize', this.onWindowResize.bind(this));
                     window.addEventListener('mousemove', this.onMouseMove.bind(this));
-
-                    this.updateTheme();
                     this.animate();
                 },
-
-                isWebGLAvailable() {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-                    } catch (e) {
-                        return false;
-                    }
+                
+                handleError() {
+                    document.getElementById('webgl-canvas').style.display = 'none';
+                    document.getElementById('webgl-fallback').style.display = 'block';
+                    document.getElementById('preloader').classList.add('hidden');
                 },
 
-                addGrid() {
-                    this.gridHelper = new THREE.GridHelper(100, 50, 0xffffff, 0xffffff);
-                    this.gridHelper.material.transparent = true;
-                    this.scene.add(this.gridHelper);
-                },
-
-                addParticles() {
-                    const particleCount = 5000;
-                    const positions = new Float32Array(particleCount * 3);
-                    for (let i = 0; i < particleCount * 3; i++) {
-                        positions[i] = (Math.random() - 0.5) * 50;
-                    }
-                    const geometry = new THREE.BufferGeometry();
-                    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                    const material = new THREE.PointsMaterial({
-                        size: 0.02,
-                        transparent: true,
-                    });
-                    this.particles = new THREE.Points(geometry, material);
-                    this.scene.add(this.particles);
-                },
-
-                addPortrait() {
-                    const geometry = new THREE.PlaneGeometry(2, 2, 128, 128);
+                createPortrait(texture) {
+                    const geometry = new THREE.PlaneGeometry(2.5, 2.5, 128, 128);
                     const material = new THREE.ShaderMaterial({
                         uniforms: {
                             uTime: { value: 0 },
-                            uTexture: { value: new THREE.TextureLoader().load('https://i.ibb.co/jZxwXR2Y/1759419391197.png') },
+                            uTexture: { value: texture },
                             uMouse: { value: new THREE.Vector2(0, 0) },
-                            uVignette: { value: 0.6 },
-                            uColor1: { value: new THREE.Color(0x00f0ff) },
-                            uColor2: { value: new THREE.Color(0xff00ff) }
+                            uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
                         },
                         vertexShader: `
                             varying vec2 vUv;
                             uniform float uTime;
                             uniform vec2 uMouse;
-
                             void main() {
                                 vUv = uv;
                                 vec3 pos = position;
-                                float dist = distance(vec2(pos.x, pos.y), uMouse * 2.0);
+                                float dist = distance(uv, uMouse);
                                 pos.z += sin(dist * 10.0 - uTime * 2.0) * 0.05;
                                 gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
                             }
                         `,
                         fragmentShader: `
-                            varying vec2 vUv;
-                            uniform float uTime;
                             uniform sampler2D uTexture;
-                            uniform vec2 uMouse;
-                            uniform float uVignette;
-                            uniform vec3 uColor1;
-                            uniform vec3 uColor2;
-
-                            float random(vec2 st) {
-                                return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-                            }
-
+                            uniform float uTime;
+                            varying vec2 vUv;
                             void main() {
                                 vec2 uv = vUv;
-                                vec4 texColor = texture2D(uTexture, uv);
-
-                                // Scanlines
-                                float scanline = sin(uv.y * 600.0) * 0.04;
-                                texColor.rgb -= scanline;
-
+                                float time = uTime * 0.5;
+                                vec4 color = texture2D(uTexture, uv);
+                                
+                                // Scanline
+                                float scanline = sin(uv.y * 800.0 - time * 10.0) * 0.02;
+                                color.rgb -= scanline;
+                                
                                 // Glitch
-                                float glitch = random(vec2(uTime, uv.y)) * 0.1;
-                                if (glitch > 0.08) {
-                                    uv.x += (random(vec2(uTime * 2.0, uv.y)) - 0.5) * 0.1;
-                                }
-                                texColor = texture2D(uTexture, uv);
-
-                                // Vignette
-                                float vignette = smoothstep(uVignette, 0.2, length(uv - 0.5));
-                                texColor.rgb *= vignette;
-
-                                // Color tint based on mouse
-                                float mouseEffect = smoothstep(0.5, 0.0, distance(uv, uMouse));
-                                vec3 tint = mix(uColor1, uColor2, uv.x + uv.y);
-                                texColor.rgb += tint * mouseEffect * 0.2;
-
-                                gl_FragColor = texColor;
+                                float glitch = texture2D(uTexture, vec2(uv.x + sin(uv.y * 20.0 + time) * 0.02, uv.y)).r;
+                                color.r += glitch * 0.1;
+                                
+                                gl_FragColor = color;
                             }
-                        `,
-                        transparent: true,
+                        `
                     });
                     this.portraitMesh = new THREE.Mesh(geometry, material);
-                    this.portraitMesh.position.z = -1;
                     this.scene.add(this.portraitMesh);
                 },
 
-                updateTheme() {
-                    const styles = getComputedStyle(document.body);
-                    const primary = new THREE.Color(styles.getPropertyValue('--primary-glow').trim());
-                    const secondary = new THREE.Color(styles.getPropertyValue('--secondary-glow').trim());
-                    const gridColor = new THREE.Color(styles.getPropertyValue('--grid-line-color').trim());
-                    
-                    if(this.gridHelper) this.gridHelper.material.color.set(gridColor);
-                    if(this.particles) this.particles.material.color.set(primary);
-                    if(this.portraitMesh) {
-                        this.portraitMesh.material.uniforms.uColor1.value = primary;
-                        this.portraitMesh.material.uniforms.uColor2.value = secondary;
-                    }
-                },
-                
-                onResize() {
+                onWindowResize() {
                     this.camera.aspect = window.innerWidth / window.innerHeight;
                     this.camera.updateProjectionMatrix();
                     this.renderer.setSize(window.innerWidth, window.innerHeight);
-                    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    if (this.portraitMesh) {
+                        this.portraitMesh.material.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+                    }
                 },
-
+                
                 onMouseMove(event) {
                     this.targetMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
                     this.targetMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -628,220 +441,203 @@
                     requestAnimationFrame(this.animate.bind(this));
                     const elapsedTime = this.clock.getElapsedTime();
                     
-                    // Smooth mouse movement
-                    this.mouse.x += (this.targetMouse.x - this.mouse.x) * 0.05;
-                    this.mouse.y += (this.targetMouse.y - this.mouse.y) * 0.05;
-
-                    this.gridHelper.position.y = -1.5;
-                    this.particles.rotation.y = elapsedTime * 0.02;
+                    // Lerp mouse for smooth movement
+                    this.mouse.x += (this.targetMouse.x * 0.5 - this.mouse.x) * 0.05;
+                    this.mouse.y += (this.targetMouse.y * 0.5 - this.mouse.y) * 0.05;
 
                     if (this.portraitMesh) {
                         this.portraitMesh.material.uniforms.uTime.value = elapsedTime;
-                        this.portraitMesh.material.uniforms.uMouse.value.set(
-                            (this.mouse.x + 1) / 2, 
-                            (this.mouse.y + 1) / 2
-                        );
-                        this.portraitMesh.rotation.y = this.mouse.x * 0.1;
-                        this.portraitMesh.rotation.x = -this.mouse.y * 0.1;
+                        this.portraitMesh.material.uniforms.uMouse.value.set(this.mouse.x, this.mouse.y);
                     }
-
                     this.renderer.render(this.scene, this.camera);
                 }
             };
-            window.webglScene = webglScene; // Expose for theme manager
+            webglController.init();
+        } catch (e) {
+            console.error("WebGL initialization failed.", e);
+            if (webglController) webglController.handleError();
+            else {
+                 document.getElementById('webgl-canvas').style.display = 'none';
+                 document.getElementById('webgl-fallback').style.display = 'block';
+                 document.getElementById('preloader').classList.add('hidden');
+            }
+        }
+        
 
-            // --- MODULE: TERMINAL ---
-            const terminal = {
-                inputEl: document.getElementById('terminal-input'),
-                outputEl: document.getElementById('terminal-output'),
-                uiContainer: document.getElementById('ui-container'),
-                history: [],
-                historyIndex: -1,
-                isReducedMotion: window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true,
-                
-                init() {
-                    this.inputEl.addEventListener('keydown', this.handleInput.bind(this));
-                    this.inputEl.addEventListener('input', this.playSound.bind(this, 'keypress'));
-                    document.body.addEventListener('click', () => this.inputEl.focus());
-                    this.displayWelcome();
-                },
-                
-                playSound(type) {
-                    try {
-                        const audioEl = document.getElementById(`audio-${type}`);
-                        audioEl.currentTime = 0;
-                        audioEl.play();
-                    } catch (e) {
-                        // Audio playback failed, ignore.
-                    }
-                },
+        // --- AUDIO CONTROLLER ---
+        const audioController = {
+            sounds: {
+                keypress: document.getElementById('audio-keypress'),
+                enter: document.getElementById('audio-enter'),
+                error: document.getElementById('audio-error'),
+            },
+            play(sound) {
+                if (this.sounds[sound]) {
+                    this.sounds[sound].currentTime = 0;
+                    this.sounds[sound].play().catch(e => {});
+                }
+            }
+        };
 
-                handleInput(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        const value = this.inputEl.value.trim().toLowerCase();
-                        if (value) {
-                            this.history.unshift(value);
-                            this.historyIndex = -1;
-                            this.logInput(value);
-                            this.processCommand(value);
-                        }
-                        this.inputEl.value = '';
-                    } else if (e.key === 'ArrowUp') {
-                        e.preventDefault();
-                        if (this.historyIndex < this.history.length - 1) {
-                            this.historyIndex++;
-                            this.inputEl.value = this.history[this.historyIndex];
-                        }
-                    } else if (e.key === 'ArrowDown') {
-                        e.preventDefault();
-                        if (this.historyIndex > 0) {
-                            this.historyIndex--;
-                            this.inputEl.value = this.history[this.historyIndex];
-                        } else {
-                            this.historyIndex = -1;
-                            this.inputEl.value = '';
-                        }
+        // --- TERMINAL CONTROLLER ---
+        const terminalController = {
+            input: document.getElementById('command-input'),
+            outputContainer: document.getElementById('output-container'),
+            commandHistory: [],
+            historyIndex: -1,
+
+            init() {
+                this.input.addEventListener('keydown', this.handleInput.bind(this));
+                document.addEventListener('click', () => this.input.focus());
+                this.typeCommand('help', true);
+            },
+
+            handleInput(e) {
+                audioController.play('keypress');
+                if (e.key === 'Enter') {
+                    audioController.play('enter');
+                    const command = this.input.value.trim();
+                    if (command) {
+                        this.commandHistory.push(command);
+                        this.historyIndex = this.commandHistory.length;
+                        this.processCommand(command);
                     }
-                },
-                
-                processCommand(commandStr) {
-                    this.playSound('command');
-                    const [command, ...args] = commandStr.split(' ');
-                    const handler = this.commands[command];
-                    
-                    if (handler) {
-                        const output = handler(args);
-                        this.streamOutput(output.content, output.type);
+                    this.input.value = '';
+                } else if (e.key === 'ArrowUp') {
+                    if (this.historyIndex > 0) {
+                        this.historyIndex--;
+                        this.input.value = this.commandHistory[this.historyIndex];
+                        e.preventDefault();
+                    }
+                } else if (e.key === 'ArrowDown') {
+                    if (this.historyIndex < this.commandHistory.length - 1) {
+                        this.historyIndex++;
+                        this.input.value = this.commandHistory[this.historyIndex];
                     } else {
-                        this.playSound('error');
-                        this.streamOutput(`Command not found: '${command}'. Type 'help' for a list of commands.`, 'log-error');
-                    }
-                },
-
-                streamOutput(htmlContent, type = 'log-output') {
-                    const card = document.createElement('div');
-                    card.className = `log-card ${type}`;
-                    card.innerHTML = htmlContent;
-                    this.outputEl.appendChild(card);
-
-                    if (!this.isReducedMotion) {
-                        gsap.fromTo(card, 
-                            { opacity: 0, y: 20, scale: 0.98 }, 
-                            { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power4.out' }
-                        );
-                    } else {
-                        card.style.opacity = 1;
-                        card.style.transform = 'none';
-                    }
-
-                    this.uiContainer.scrollTop = this.uiContainer.scrollHeight;
-                },
-
-                logInput(value) {
-                    this.streamOutput(`<span class="prompt">&gt;</span> ${value}`, 'log-input');
-                },
-                
-                displayWelcome() {
-                    const welcomeMessage = `
-                        <h1>Hemang's Dossier</h1>
-                        <p>Welcome to my interactive command-line resume.</p>
-                        <p>Type 'help' to see the full list of available commands.</p>
-                        <p>Mantra: ${data.mantra}</p>
-                    `;
-                    this.streamOutput(welcomeMessage);
-                },
-                
-                // --- COMMANDS ---
-                commands: {
-                    help: () => ({
-                        content: `<h2>Available Commands</h2>
-                        <div class="command-list">
-                            <div><span class="command">whoami</span> - About me</div>
-                            <div><span class="command">skills</span> - My skillset</div>
-                            <div><span class="command">timeline</span> - My career timeline</div>
-                            <div><span class="command">projects</span> - Recent projects</div>
-                            <div><span class="command">contact</span> - How to reach me</div>
-                            <div><span class="command">socials</span> - My social links</div>
-                            <div><span class="command">theme</span> - Change visual theme</div>
-                            <div><span class="command">certifications</span> - My certs</div>
-                            <div><span class="command">publications</span> - My writings</div>
-                            <div><span class="command">languages</span> - Spoken languages</div>
-                            <div><span class="command">achievements</span> - My accomplishments</div>
-                            <div><span class="command">availability</span> - My current status</div>
-                            <div><span class="command">references</span> - Professional refs</div>
-                            <div><span class="command">mantra</span> - My guiding principle</div>
-                            <div><span class="command">download</span> - Get my resume PDF</div>
-                            <div><span class="command">clear</span> - Clear the terminal</div>
-                        </div>`
-                    }),
-                    whoami: () => ({
-                        content: `<h2>${data.name}</h2>
-                        <p>${data.headline}</p>`
-                    }),
-                    skills: () => ({
-                        content: `<h2>Skills</h2>
-                        <h3>Programming Languages</h3><div class="skill-list">${data.skills.languages.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>
-                        <h3>Frameworks & Libraries</h3><div class="skill-list">${data.skills.frameworks.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>
-                        <h3>Tools & Platforms</h3><div class="skill-list">${data.skills.tools.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>
-                        <h3>Concepts</h3><div class="skill-list">${data.skills.concepts.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>`
-                    }),
-                    timeline: () => ({
-                        content: `<h2>Timeline</h2>
-                        <h3>Experience</h3>
-                        <ul>${data.experience.map(e => `<li><strong>${e.role} @ ${e.company}</strong> (${e.duration})<br>${e.description}</li>`).join('')}</ul>
-                        <h3>Education</h3>
-                        <ul>${data.education.map(e => `<li><strong>${e.degree}</strong><br>${e.institution} (${e.duration})</li>`).join('')}</ul>`
-                    }),
-                    projects: () => ({
-                        content: `<h2>Projects</h2><ul>${data.projects.map(p => `<li><strong>${p.name}</strong><br>${p.description}</li>`).join('')}</ul>`
-                    }),
-                    contact: () => ({
-                        content: `<h2>Contact</h2>
-                        <ul>
-                            <li>Email: <a href="mailto:${data.contact.email}">${data.contact.email}</a></li>
-                            <li>LinkedIn: <a href="${data.contact.linkedin}" target="_blank">linkedin.com/in/coehemang</a></li>
-                        </ul>`
-                    }),
-                    certifications: () => ({
-                        content: `<h2>Certifications</h2><ul>${data.certifications.map(c => `<li>${c}</li>`).join('')}</ul>`
-                    }),
-                    publications: () => ({
-                        content: `<h2>Publications</h2><ul>${data.publications.map(p => `<li><strong>${p.title}</strong> - ${p.context}</li>`).join('')}</ul>`
-                    }),
-                    languages: () => ({
-                        content: `<h2>Languages</h2><ul>${data.languages.map(l => `<li><strong>${l.lang}</strong>: ${l.proficiency}</li>`).join('')}</ul>`
-                    }),
-                    achievements: () => ({
-                        content: `<h2>Achievements</h2><ul>${data.achievements.map(a => `<li>${a}</li>`).join('')}</ul>`
-                    }),
-                    references: () => ({ content: `<p>${data.references}</p>` }),
-                    availability: () => ({ content: `<p>${data.availability}</p>` }),
-                    socials: () => ({
-                        content: `<h2>Socials</h2><ul><li>LinkedIn: <a href="${data.socials.linkedin}" target="_blank">linkedin.com/in/coehemang</a></li></ul>`
-                    }),
-                    mantra: () => ({ content: `<p>${data.mantra}</p>` }),
-                    download: () => {
-                        // In a real scenario, this would link to a PDF. Here we simulate.
-                        return { content: `<p>Resume download initiated... (Feature in development). Please use 'contact' for now.</p>`, type: 'log-success' };
-                    },
-                    clear: () => {
-                        terminal.outputEl.innerHTML = '';
-                        return { content: 'Terminal cleared.', type: 'log-success' };
-                    },
-                    theme: () => {
-                        const newTheme = themeManager.cycleTheme();
-                        return { content: `Theme changed to: <span style="text-transform: capitalize;">${newTheme}</span>`, type: 'log-success' };
+                        this.historyIndex = this.commandHistory.length;
+                        this.input.value = '';
                     }
                 }
-            };
-            
-            // --- INITIALIZATION ---
-            themeManager.init();
-            webglScene.init();
-            terminal.init();
+            },
 
-        });
+            processCommand(input) {
+                const [command, ...args] = input.toLowerCase().split(' ');
+                const historyHtml = `
+                    <div class="input-line-history">
+                        <span class="prompt-symbol">HMG_OS &gt;</span>
+                        <span>${input}</span>
+                    </div>`;
+
+                if (command in commands) {
+                    const output = commands[command](args);
+                    this.renderOutput(historyHtml, output);
+                } else {
+                    const output = `<div style="color:var(--color-error)">Error: Command not found: '${command}'. Type 'help' for a list of commands.</div>`;
+                    this.renderOutput(historyHtml, output);
+                    audioController.play('error');
+                }
+            },
+            
+            async typeCommand(command, isInstant = false) {
+                if (isInstant) {
+                    this.processCommand(command);
+                    return;
+                }
+
+                for (let i = 0; i < command.length; i++) {
+                    this.input.value += command.charAt(i);
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                await new Promise(resolve => setTimeout(resolve, 500));
+                this.processCommand(this.input.value);
+                this.input.value = '';
+            },
+
+            renderOutput(historyHtml, outputHtml) {
+                const card = document.createElement('div');
+                card.classList.add('output-card');
+                card.innerHTML = historyHtml + `<div class="output-content">${outputHtml}</div>`;
+                this.outputContainer.appendChild(card);
+                
+                gsap.fromTo(card, 
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.5, ease: 'power4.out' }
+                );
+                
+                this.outputContainer.scrollTop = this.outputContainer.scrollHeight;
+                
+                // Add micro-interactions to new links
+                const links = card.querySelectorAll('a');
+                links.forEach(link => {
+                    anime({
+                        targets: link,
+                        color: ['var(--color-primary)', 'var(--color-accent)'],
+                        duration: 300,
+                        easing: 'easeInOutSine',
+                        direction: 'alternate',
+                        loop: true,
+                        delay: anime.random(500, 1500)
+                    });
+                });
+            }
+        };
+
+        // --- COMMANDS DEFINITION ---
+        const commands = {
+            help: () => `
+                <h2>Command Directory [HMG_OS v1.0]</h2>
+                <p>Welcome to my interactive dossier. All data is sourced from my personal records. Use the commands below to navigate.</p>
+                <ul>
+                    <li><strong>whoami</strong> - Displays my professional summary.</li>
+                    <li><strong>experience</strong> - Details my work experience.</li>
+                    <li><strong>skills</strong> - Lists my technical skill set.</li>
+                    <li><strong>education</strong> - Shows my educational background.</li>
+                    <li><strong>projects</strong> - (Coming Soon) Showcases my project portfolio.</li>
+                    <li><strong>certifications</strong> - Lists my professional certifications.</li>
+                    <li><strong>publications</strong> - My published works.</li>
+                    <li><strong>languages</strong> - Languages I speak.</li>
+                    <li><strong>contact</strong> - How to get in touch.</li>
+                    <li><strong>socials</strong> - My social media presence.</li>
+                    <li><strong>availability</strong> - My current work availability.</li>
+                    <li><strong>references</strong> - Information on references.</li>
+                    <li><strong>mantra</strong> - My guiding principle.</li>
+                    <li><strong>theme [neon|monochrome]</strong> - Toggles the UI theme.</li>
+                    <li><strong>art</strong> - Information about the background visual.</li>
+                    <li><strong>download</strong> - (Coming Soon) Get a PDF version of my resume.</li>
+                    <li><strong>clear</strong> - Clears the terminal screen.</li>
+                </ul>
+            `,
+            whoami: () => `<h2>Identity Profile</h2><p>${RESUME_DATA.whoami}</p><h3>Headline</h3><p>${RESUME_DATA.headline}</p>`,
+            experience: () => `<h2>Work Experience</h2>` + RESUME_DATA.experience.map(e => `<h3>${e.role} @ ${e.company}</h3><strong>Duration:</strong> ${e.duration}<br><p>${e.description}</p>`).join(''),
+            skills: () => `<h2>Skill Matrix</h2>` + Object.entries(RESUME_DATA.skills).map(([category, skills]) => `<h3>${category}</h3><ul>${skills.map(s => `<li>${s}</li>`).join('')}</ul>`).join(''),
+            education: () => `<h2>Education</h2>` + RESUME_DATA.education.map(e => `<h3>${e.degree}</h3><p>${e.institution} (${e.duration})</p>`).join(''),
+            projects: () => `<p>The 'projects' module is currently under development. Please check back later.</p>`,
+            certifications: () => `<h2>Certifications</h2><ul>${RESUME_DATA.certifications.map(c => `<li>${c}</li>`).join('')}</ul>`,
+            publications: () => `<h2>Publications</h2><ul>${RESUME_DATA.publications.map(p => `<li>${p.title} (${p.context})</li>`).join('')}</ul>`,
+            languages: () => `<h2>Languages</h2><ul>${RESUME_DATA.languages.map(l => `<li>${l.lang} - <strong>${l.proficiency}</strong></li>`).join('')}</ul>`,
+            contact: () => `<h2>Contact Channels</h2><ul><li>Email: <a href="mailto:${RESUME_DATA.contact.email}">${RESUME_DATA.contact.email}</a></li><li>LinkedIn: <a href="${RESUME_DATA.contact.linkedin}" target="_blank">${RESUME_DATA.contact.linkedin}</a></li></ul>`,
+            socials: () => `<h2>Social Network Links</h2><ul>` + Object.entries(RESUME_DATA.socials).map(([platform, url]) => `<li>${platform.charAt(0).toUpperCase() + platform.slice(1)}: <a href="${url}" target="_blank">${url}</a></li>`).join('') + `</ul>`,
+            availability: () => `<h2>Availability Status</h2><p style="color:var(--color-success)">${RESUME_DATA.availability}</p>`,
+            references: () => `<h2>References</h2><p>${RESUME_DATA.references}</p>`,
+            mantra: () => `<h2>Mantra</h2><p><em>"${RESUME_DATA.mantra}"</em></p>`,
+            art: () => `<h2>Art Engine</h2><p>The background is a real-time WebGL portrait rendered with Three.js. It uses custom GLSL shaders to create reactive displacement, scanlines, and glitch effects based on your cursor's position. It is designed to be a living piece of digital art representing the fusion of code and creativity.</p>`,
+            download: () => `<p>The 'download' module is not yet implemented. A PDF version of this resume will be available soon.</p>`,
+            theme: (args) => {
+                if (args === 'neon' || args === 'monochrome') {
+                    document.body.className = `theme-${args[0]}`;
+                    return `<p style="color:var(--color-success)">Theme changed to ${args[0]}.</p>`;
+                }
+                return `<p style="color:var(--color-error)">Usage: theme [neon|monochrome]</p>`;
+            },
+            clear: () => {
+                terminalController.outputContainer.innerHTML = '';
+                return `Screen cleared.`;
+            }
+        };
+
+        // --- INITIALIZE ---
+        terminalController.init();
+    });
     </script>
 </body>
 </html>
