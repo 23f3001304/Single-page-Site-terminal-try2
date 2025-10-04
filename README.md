@@ -1,81 +1,72 @@
-```
-markdown
-_
-output
- = """# HEMANG :: A Terminal-Based Interactive Resume
+# just a chill human :: terminal
+
+A sleek, interactive terminal-style website designed for a chill, human experience. This project provides a classic command-line interface on a static web page, now enhanced with multiple themes, ASCII art generation, and simple terminal-based games.
+
+
+![Project Screenshot](https://user-images.githubusercontent.com/83253033/154887309-844a4b2a-0a0e-4735-a681-37f075b058c4.png)
+
+*(Image is a placeholder and should be updated with a current screenshot)*
 
 ## Summary
 
-This project is a unique and interactive single-page web application that presents a personal resume in the style of a terminal command center. It combines a minimalist, retro aesthetic with an engaging command-line interface, offering a creative way to explore professional information. The application now includes multiple themes, ASCII art, and simple text-based games to enhance user engagement. Built with a lightweight stack of HTML, CSS, and vanilla JavaScript, the application is fast, responsive, and easily customizable.
+This is a single-page, static web application that simulates a terminal interface. It's built with vanilla HTML, CSS, and JavaScript, making it lightweight and easy to customize. The latest update focuses on expanding user interaction and aesthetic appeal.
+
+**New Features:**
+*   **Multiple Themes:** Switch between various color schemes to suit your mood.
+*   **ASCII Art Generator:** Create fun ASCII art from any text using the `ascii` command.
+*   **Terminal Games:** Kill some time with simple, built-in text-based games.
 
 ## Setup
 
-This is a static web application and requires no build process.
+No complex build process is required. Since this is a static site, you can run it locally or deploy it to any static web host.
 
-1.  **Clone the repository:**
-    
-```
-bash
-    git clone https://github.com/23f3001304/Single-page-Site-terminal-try2.git
-    
-```
-
-2.  **Navigate to the directory:**
+To run locally:
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/your-repository-name.git
     ```
-bash
-    cd Single-page-Site-terminal-try2
-    
-```
-
-3.  **Open the application:**
-    Simply open the `index.html` file in any modern web browser.
+2.  Navigate to the project directory:
+    ```bash
+    cd your-repository-name
+    ```
+3.  Open the `index.html` file in your favorite web browser.
 
 ## Usage
 
-Interact with the application by typing commands into the terminal. For a list of available commands, type `help`.
+Interact with the website by typing commands into the terminal prompt. Type `help` to see a list of all available commands.
 
-### Core Commands
+### Available Commands
 
-| Command | Description |
-| --- | --- |
-| `help` | Displays a list of all available commands. |
-| `clear` | Clears all output from the terminal screen. |
-| `whoami` | Displays a brief biography. |
-| `socials` | Provides links to social and professional profiles. |
-| `contact` | Displays contact information. |
-| `theme [name]` | Cycles through available visual themes. |
-| `art` | Displays an ASCII art piece with the text "just a chill human". |
-| `games` | Lists available mini-games to play in the terminal. |
-| `download` | Provides a link to download a PDF version of the resume. |
-
-### Resume Commands
-
-| Command | Description |
-| --- | --- |
-| `experience` | Details professional and research experience. |
-| `skills` | Lists key technical and research skills. |
-| `projects` | Showcases selected projects with descriptions. |
-| `education` | Displays educational background. |
-| `achievements`| Highlights significant accomplishments and awards. |
+| Command         | Description                                                                 | Usage Example                |
+| --------------- | --------------------------------------------------------------------------- | ---------------------------- |
+| `help`          | Displays a list of all available commands.                                  | `help`                       |
+| `about`         | Shows a brief summary about me.                                             | `about`                      |
+| `projects`      | Lists my recent projects with links.                                        | `projects`                   |
+| `social`        | Provides links to my social media profiles.                                 | `social`                     |
+| `theme`         | Lists available themes or sets a new one.                                   | `theme` or `theme matrix`    |
+| `ascii`         | Generates ASCII art from the provided text.                                 | `ascii hello world`          |
+| `game`          | Starts a mini-game. Use `game list` to see options.                         | `game snake`                 |
+| `clear`         | Clears all output from the terminal screen.                                 | `clear`                      |
+| `welcome`       | Displays the welcome banner again.                                          | `welcome`                    |
 
 ## Code Explanation
 
-The application is built with simplicity and extensibility in mind, using only vanilla HTML, CSS, and JavaScript.
+The project is structured for simplicity and easy customization. All core logic resides in three main files:
 
-*   **`index.html`**: The main entry point of the application, containing the structure of the terminal interface.
-*   **`style.css`**: This file contains all the styling for the application, including the different color themes for the terminal.
-*   **`script.js`**: The core of the application. It handles command parsing, executes the corresponding functions, and displays the output in the terminal. This file implements features such as ASCII art and games.
+*   **`index.html`**: The main HTML file that provides the structure for the terminal. The core element is the `<div id="terminal">`.
+*   **`style.css`**: Contains all styling, including the layout, animations, and color schemes for themes. New themes can be added by creating a new CSS class (e.g., `.theme-solarized`) and defining the color variables.
+*   **`script.js`**: The heart of the application. This file handles:
+    *   Command parsing and execution.
+    *   DOM manipulation to display output.
+    *   Theme switching logic.
+    *   The implementation for the ASCII generator and games.
 
-### Key Features
-
-*   **Command Parser**: A simple function that takes user input, splits it into a command and arguments, and calls the appropriate function.
-*   **Theming**: The `theme` command dynamically updates CSS variables to change the colors of the terminal.
-*   **ASCII Art**: The `art` command prints a pre-defined ASCII art string to the terminal.
-*   **Terminal Games**: The `games` command introduces a simple game loop, allowing for interactive text-based games within the terminal.
+To customize the content (like adding new projects or social links), simply modify the corresponding data structures within `script.js`.
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for full details.
-"""
-print(markdown_output)
-```
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+Copyright (c) 2025 [Your Name]
