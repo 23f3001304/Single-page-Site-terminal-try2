@@ -1,115 +1,121 @@
-```markdown
-# Hemang :: Web3 Dossier
-
-[
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-](https://opensource.org/licenses/MIT)
-
-An avant-garde, command-driven resume experience that fuses the discipline of Swiss design with the high-energy artistry of WebGL shaders. This single-page application functions as a living dossier, presenting a professional profile within an interactive, full-screen terminal.
-
-The interface is built on a foundation of crystalline grid lines, asymmetric layouts, and refined typography, drenched in holographic textures, volumetric light, and glassmorphism. It's a meticulously crafted world that feels both mathematically precise and artistically outrageous.
-
-[View Live Demo](https://coehemang.github.io/)
-
-
-![Live Demo Screenshot](https://i.ibb.co/L5QG2F3/image.png)
-
+# HEMANG :: Web3 Dossier
 
 ## Summary
 
-This project is an architectural push to sculpt a resume that transcends traditional formats. It leverages `three.js` for a reactive WebGL environment, `GSAP` for sophisticated timeline choreography, and `anime.js` for precise micro-interactions. The goal is a seamless narrative arc—from an identity mantra to deep-dives into skills and projects—all navigated through a futuristic command-line interface.
+This project is an interactive, single-page web application that reimagines the personal resume as a Web3-grade, avant-garde command center. It fuses the discipline of Swiss design—emphasizing grid, hierarchy, and refined typography—with the high-energy artistry of GPU shaders and generative visuals.
 
-Every element, from the kinetic typography to the shader-driven WebGL portrait, is designed to be responsive, accessible, and respectful of user preferences like `prefers-reduced-motion`.
+The experience is entirely command-driven and full-screen, designed to feel like a living dossier. The interface is built on a foundation of crystalline grid lines, asymmetric layouts, and glassmorphism, all enhanced with holographic textures, volumetric light, and particle systems.
+
+Powered by a stack of **three.js** for the WebGL rendering engine, **GSAP** for complex timeline choreography, and **anime.js** for precise micro-interactions, the application delivers a polished and immersive narrative experience. Key features include an interactive WebGL portrait that reacts to user input, a robust theme engine, and dynamically streamed output that presents resume data as futuristic, neon-accented log cards.
+
+---
 
 ## Setup
 
-This is a static web application with no server-side dependencies. To run it locally:
+This is a static web application with no build process required. All dependencies are included or sourced directly.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/your-repository-name.git
+    git clone https://github.com/23f3001304/Single-page-Site-terminal-try2.git
     ```
 
-2.  **Navigate to the project directory:**
+2.  **Navigate to the directory:**
     ```bash
-    cd your-repository-name
+    cd Single-page-Site-terminal-try2
     ```
 
 3.  **Open the application:**
-    Simply open the `index.html` file in a modern web browser. For the best experience and to avoid potential CORS issues with asset loading, it's recommended to use a local development server.
+    Simply open the `index.html` file in a modern, WebGL-compatible web browser (e.g., Chrome, Firefox, Safari, Edge).
 
-    *   **Using VS Code's Live Server:** Right-click `index.html` and select "Open with Live Server".
-    *   **Using Python:**
-        ```bash
-        # For Python 3
-        python -m http.server
-
-        # For Python 2
-        python -m SimpleHTTPServer
-        ```
+---
 
 ## Usage
 
-Interact with the application by typing commands into the terminal prompt. All commands stream their output as futuristic log cards that animate onto the screen. Type `help` to see a list of available commands at any time.
+Interact with the application by typing commands into the terminal. Type `help` to see a list of available commands at any time.
 
-### Available Commands
+### Core Commands
 
-| Command         | Description                                                               | Arguments                  |
-| --------------- | ------------------------------------------------------------------------- | -------------------------- |
-| **CORE**        |                                                                           |                            |
-| `help`          | Displays this list of all available commands.                             | -                          |
-| `clear`         | Clears all output from the terminal screen.                               | -                          |
-| `mantra`        | Displays the core philosophy and approach.                                | -                          |
-| `whoami`        | Prints a detailed biography and professional headline.                    | -                          |
-| `socials`       | Lists all social and professional network links.                          | -                          |
-| **PROFESSIONAL**|                                                                           |                            |
-| `experience`    | Details professional work and research experience.                        | -                          |
-| `timeline`      | Shows a chronological overview of education and career milestones.        | -                          |
-| `skills`        | Lists key technical and research skills.                                  | -                          |
-| `projects`      | Displays a showcase of selected projects as holographic cards.            | -                          |
-| `certifications`| Lists all professional certifications.                                    | -                          |
-| `publications`  | Shows a list of published works.                                          | -                          |
-| `achievements`  | Highlights significant accomplishments.                                   | -                          |
-| **UTILITY**     |                                                                           |                            |
-| `languages`     | Lists spoken and written languages and proficiency levels.                | -                          |
-| `contact`       | Displays contact information.                                             | -                          |
-| `availability`  | Shows current professional availability.                                  | -                          |
-| `references`    | Information on how to request professional references.                    | -                          |
-| `download`      | Provides a link to download the resume in PDF format.                     | -                          |
-| `theme`         | Cycles through visual themes or sets a specific one.                      | `neon`, `mono`, `dusk`, `noir` |
-| `art`           | Toggles post-processing effects and decorative shaders.                   | -                          |
+| Command             | Description                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------- |
+| `help`              | Displays a list of all available commands and their functions.                                          |
+| `clear`             | Clears all output from the terminal screen.                                                             |
+| `whoami`            | Displays a brief biography, education, and professional headline.                                       |
+| `mantra`            | Shows the personal mantra or mission statement.                                                         |
+| `theme [name]`      | Cycles through visual themes: `neon` (default), `monochrome`, `dusk`, `noir`. Persists for the session.  |
+| `art`               | Toggles the background shader-driven art and particle effects.                                          |
+| `download`          | Provides a link to download a traditional PDF version of the resume.                                    |
 
-**Example:**
-To change the visual style to the monochrome Swiss palette, type:
-`theme mono`
+### Resume & Profile Commands
+
+| Command           | Description                                                                                               |
+| ----------------- | --------------------------------------------------------------------------------------------------------- |
+| `experience`      | Details professional and research experience, including work at DRDO (GANxART).                           |
+| `timeline`        | Provides a chronological overview of key career and academic milestones.                                  |
+| `skills`          | Lists key technical and research skills (e.g., Research Skills, GaN, MERN Stack, Python).                   |
+| `projects`        | Showcases selected projects with descriptions, rendered as interactive holographic cards.                   |
+| `certifications`  | Displays a list of earned certifications (e.g., AWS, SQL, Java, Full Stack).                              |
+| `publications`    | Lists published articles and works, such as "Crushader Issue 1".                                          |
+| `achievements`    | Highlights significant accomplishments and awards.                                                        |
+| `languages`       | Lists spoken languages and proficiency levels (Hindi: Native/Bilingual, English: Professional Working).   |
+| `socials`         | Provides links to social and professional profiles, including LinkedIn.                                   |
+| `contact`         | Displays contact information, including the email `coehemang@gmail.com`.                                    |
+| `references`      | Information on how to request professional references.                                                    |
+| `availability`    | Shows current professional availability status.                                                           |
+
+---
 
 ## Code Explanation
 
-The application's architecture is designed to be modular and performant, centered around three core pillars: rendering, animation, and interactivity.
+The architecture is designed to be a cohesive system where visual artistry, interaction, and data presentation are tightly integrated.
 
-### Rendering Engine (Three.js)
+### Rendering Engine & Visuals (three.js)
 
-The immersive background and interactive elements are powered by a `three.js` WebGL scene. This is not a static video or image; it's a live, generative environment.
-*   **Reactive Textures:** The scene uses a stack of textures and shaders to create effects like refractive glass panels, noise-driven displacement, and iridescent overlays that respond to cursor movement and command context.
-*   **WebGL Portrait:** The profile photo is transformed into an interactive WebGL object. It features layered scanlines, caustics, glitch sweeps, and a reactive particle halo that breathes with the application's state. A fallback CSS/SVG version ensures compatibility.
-*   **Theming:** The `theme` command directly updates shader uniforms, material properties, and scene lighting in real-time to transition between palettes like `neon` and `monochrome Swiss` without visual glitches.
+The core of the experience is a `three.js` scene that renders all visual elements.
+-   **Interactive Portrait:** The central profile photo is transformed into a live WebGL texture. It is layered with custom shaders to create effects like scanlines, caustics, glitch sweeps, and refractions that react to cursor movement and audio cues. An SVG/CSS fallback is provided for non-WebGL environments.
+-   **Reactive Scene:** The background is not static. It features a stack of reactive textures, including refractive glass panels, noise-driven displacement maps, and shader-based overlays that respond to commands and user interaction, creating a sense of a living environment.
+-   **Particle Systems:** Subtle particle swarms and data rain effects drift through the scene, enhancing the Web3 aesthetic and responding to system states (e.g., loading, command success).
 
-### Motion System (GSAP & anime.js)
+### Animation & Choreography (GSAP / anime.js)
 
-Motion is central to the experience, designed to be both expressive and controlled.
-*   **GSAP (GreenSock Animation Platform):** Used for complex, timeline-based choreographies. This includes the sequenced reveal of command output cards, full-screen transitions, and major state changes that require precise synchronization.
-*   **anime.js:** Powers the micro-interactions. This library is used for its lightweight and performant handling of kinetic typography, liquid-like hover effects, pulse-driven UI highlights, and other subtle movements that enhance user feedback.
-*   **Accessibility:** All motion respects the `prefers-reduced-motion` media query. When enabled, dramatic animations are disabled or replaced with simple, elegant cross-fades.
+Motion is a key part of the experience, designed to be expressive yet controlled.
+-   **GSAP (GreenSock Animation Platform):** Used for orchestrating major, complex animations. This includes scene transitions, the choreographed streaming of terminal output cards, and camera movements.
+-   **anime.js:** Handles high-performance, lightweight micro-interactions. This includes kinetic typography effects on text reveal, liquid transitions for UI elements, and pulse-driven highlights on hover/focus states.
+-   **`prefers-reduced-motion`:** All animations respect the user's OS-level accessibility settings. If reduced motion is enabled, non-essential, decorative animations are disabled while crucial UI feedback remains.
 
-### Command & State Management
+### UI & Command System
 
-A central JavaScript module handles all user input and application state.
-*   **Command Parser:** A simple but effective parser reads user input, identifies valid commands and arguments, and triggers the corresponding function.
-*   **Output Stream:** Command outputs are dynamically generated as HTML elements and appended to the DOM. GSAP orchestrates their animated entry to create the "streaming log" effect.
-*   **Stateful Feedback:** The system integrates audio cues for loading states, success confirmations, and error notifications, enhancing the command-center feel. The user's selected theme is persisted for the duration of the session using `sessionStorage`.
+The user interface is built directly into the WebGL scene and the HTML DOM.
+-   **Command Parser:** A simple input parser listens for commands, validates them, and triggers the corresponding data-fetching and rendering sequence.
+-   **Futuristic Log Cards:** Command output is not simple text. Each response is rendered as a "log card"—a DOM element styled with glassmorphism, neon gradients, and subtle depth. These cards are animated into view using GSAP, appearing to stream from a data source.
+-   **Swiss Design Grid:** Despite the complex visuals, the layout of all UI elements adheres to a strict Swiss grid system, ensuring rhythm, hierarchy, and legibility are maintained.
+
+### Theming & State
+
+-   **Theme Command:** The `theme` command dynamically updates CSS custom properties and swaps materials and uniforms in the `three.js` shaders. This allows for a complete visual overhaul (e.g., `neon` to `monochrome`) without glitches or page reloads. The user's choice is saved in `sessionStorage` to persist across the session.
+-   **Stateful Feedback:** The application provides rich, stateful feedback using integrated audio cues for loading pulses, success tones, and error flashes, enhancing the command-center feel.
+
+---
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for full details.
+This project is licensed under the MIT License.
 
-```
+Copyright (c) 2024 Hemang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
