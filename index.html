@@ -631,7 +631,10 @@
             }
             return `<p style="color:var(--color-error)">Usage: theme [neon|monochrome]</p>`;
             } ,
-
+            clear: () => {
+                terminalController.outputContainer.innerHTML = '';
+                return `Screen cleared.`;
+            }
         };
 
         // --- INITIALIZE ---
