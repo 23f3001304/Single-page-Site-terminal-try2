@@ -622,17 +622,16 @@
             mantra: () => `<h2>Mantra</h2><p><em>"${RESUME_DATA.mantra}"</em></p>`,
             art: () => `<h2>Art Engine</h2><p>The background is a real-time WebGL portrait rendered with Three.js. It uses custom GLSL shaders to create reactive displacement, scanlines, and glitch effects based on your cursor's position. It is designed to be a living piece of digital art representing the fusion of code and creativity.</p>`,
             download: () => `<p>The 'download' module is not yet implemented. A PDF version of this resume will be available soon.</p>`,
-            theme: (args) => {
-                if (args === 'neon' || args === 'monochrome') {
-                    document.body.className = `theme-${args[0]}`;
-                    return `<p style="color:var(--color-success)">Theme changed to ${args[0]}.</p>`;
-                }
-                return `<p style="color:var(--color-error)">Usage: theme [neon|monochrome]</p>`;
-            },
-            clear: () => {
-                terminalController.outputContainer.innerHTML = '';
-                return `Screen cleared.`;
+           theme: (args) => {
+            const mode = args[0];
+            if (mode === 'neon' || mode === 'monochrome') {
+                document.body.classList.remove('theme-neon', 'theme-monochrome');
+                if (mode !== 'neon') document.body.classList.add(`theme-${mode}`);
+            return `<p style="color:var(--color-success)">Theme changed to ${mode}.</p>`;
             }
+            return `<p style="color:var(--color-error)">Usage: theme [neon|monochrome]</p>`;
+            } ,
+
         };
 
         // --- INITIALIZE ---
