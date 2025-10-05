@@ -4,13 +4,29 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: 23f3001304@ds.study.iitm.ac.in
+      - name: Hello Step
         run: echo "Hello, world!"
-      
 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm # adjust to your dependency path
+          key: cache-dd4245f
+
+      - name: prime-cache-dd4245f
+        run: echo "Cache result: ${{ steps.cache.outputs.cache-hit }}"
+
+      - name: Install deps
+        run: npm install
