@@ -22,7 +22,7 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: ~/.npm # adjust to your dependency path
+          path: ~/.npm # adjust if not Node
           key: cache-dd4245f
 
       - name: prime-cache-dd4245f
