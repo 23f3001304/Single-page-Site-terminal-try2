@@ -1,6 +1,14 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
   test:
+    runs-on: ubuntu-latest
     steps:
-      - name: 23f3001304@ds.study.iitm.ac.in
+      - name: Print Hello
         run: echo "Hello, world!"
-      
