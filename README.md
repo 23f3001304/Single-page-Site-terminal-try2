@@ -1,23 +1,23 @@
-# Interactive Terminal Resume
+```markdown
+# Terminal Resume
 
-This project is a static web application that presents a personal resume and portfolio within a fully interactive, retro-style terminal interface.
-
-The core experience of the original terminal resume is perfectly preserved, including its layout, typography, command registry, and default theme. This update layers new functionality on top without any regressions. Enhancements include an expanded theme system, an ASCII art display command, and two embedded mini-games, all designed to integrate seamlessly into the existing terminal environment.
+A personal portfolio website that looks and feels like a real terminal. This project is built with vanilla HTML, CSS, and JavaScript, designed to be lightweight, fast, and fully responsive.
 
 ## Summary
 
-An interactive and gamified personal portfolio website designed to look and feel like a terminal. It is a single-page application built with React, featuring a command-line interface where users can explore a professional profile, view projects, change themes, and play embedded games.
+This interactive terminal serves as a unique resume and portfolio. The core experience of the original terminal—including its layout, typography, animations, and command registry—has been perfectly preserved.
 
-## Setup and Installation
+This update introduces several new, non-intrusive features:
 
-To get a local copy up and running, follow these simple steps.
+-   **Expanded Theming**: Two new color palettes, "Aurora Drift" and "Mono Noir," have been added to the `theme` command, available alongside the original default theme.
+-   **ASCII Art**: A new `ascii_mood` command renders a friendly, monospaced ASCII portrait directly in the terminal, respecting the current theme and accessibility settings.
+-   **Mini-Games**: Two lightweight, in-terminal games, `type-racer` and `asteroid-dodge`, are now available for a bit of fun. They run entirely within the command output area without altering the site's layout.
 
-### Prerequisites
+All original commands and functionality remain untouched, ensuring zero regression.
 
--   Node.js (v14 or later)
--   npm or yarn
+## Setup
 
-### Installation
+To get a local copy up and running, follow these simple steps. No complex build tools are required.
 
 1.  Clone the repository:
     ```sh
@@ -27,56 +27,88 @@ To get a local copy up and running, follow these simple steps.
     ```sh
     cd terminal-resume
     ```
-3.  Install NPM packages:
-    ```sh
-    npm install
-    ```
-4.  Run the application in development mode:
-    ```sh
-    npm start
-    ```
-    Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3.  Open the `index.html` file in your preferred web browser.
 
-## Usage and Commands
+## Usage
 
-Interact with the application by typing any of the commands below and pressing `Enter`. Use the `help` command at any time to see the list of available commands.
+Type `help` at any time to see a list of available commands.
 
-| Command         | Description                                                                                                                                                                                                |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `help`          | Lists all available commands and their descriptions.                                                                                                                                                       |
-| `about`         | Displays a brief professional summary.                                                                                                                                                                     |
-| `resume`        | Provides a link to the downloadable PDF version of the resume.                                                                                                                                             |
-| `projects`      | Shows a list of featured projects with descriptions and links to live demos and source code.                                                                                                               |
-| `contact`       | Displays contact information, including email and links to social profiles like LinkedIn and GitHub.                                                                                                       |
-| `theme`         | Changes the terminal's color palette. The original `default` theme remains the first-load experience. Usage: `theme set <themename>`.<br>**Themes:** `default`, `aurora-drift`, `mono-noir`.                  |
-| `ascii_mood`    | **(New)** Renders a friendly, chill-human portrait in monospaced ASCII art. The art respects the terminal's grid, color theme, and the user's `prefers-reduced-motion` accessibility setting.                 |
-| `type-racer`    | **(New)** Starts a lightweight, timed typing challenge. Test your speed using the application's native typography. On-screen instructions are provided. Press `ESC` at any time to quit.                     |
-| `asteroid-dodge`| **(New)** Launches a simple, cursor-controlled avoidance mini-game rendered in the command output area. Use your mouse or trackpad to navigate. Press `ESC` at any time to exit.                             |
-| `clear`         | Clears all previous output from the terminal screen.                                                                                                                                                       |
+### Standard Commands
+
+These are the original commands, which continue to function as before.
+
+-   `about`     - Displays a short bio.
+-   `skills`    - Lists technical skills and proficiencies.
+-   `projects`  - Shows a curated list of key projects.
+-   `contact`   - Provides contact information and social links.
+-   `history`   - Shows a log of previously used commands.
+-   `clear`     - Clears all output from the terminal screen.
+-   `welcome`   - Displays the welcome banner.
+
+### Enhanced Commands
+
+**`theme`**
+Changes the terminal's color scheme. The original default theme is preserved and remains the initial experience.
+
+*Usage:*
+```bash
+# List available themes
+theme
+
+# Set a new theme
+theme set <theme_name>
+```
+
+*Available themes:*
+-   `default` (The original theme)
+-   `aurora-drift`
+-   `mono-noir`
+
+### New Feature Commands
+
+**`ascii_mood`**
+Renders a friendly ASCII art portrait inside the terminal. The output respects the terminal's grid, current color theme, and the user's `prefers-reduced-motion` setting.
+
+*Usage:*
+```bash
+ascii_mood
+```
+
+**`type-racer`**
+Launches a timed typing challenge. A random text snippet will appear, and your goal is to type it as quickly and accurately as possible.
+
+*Usage:*
+```bash
+type-racer
+```
+> Press `Esc` or `Ctrl+C` to exit the game at any time.
+
+**`asteroid-dodge`**
+Starts a simple cursor-controlled mini-game. Use your arrow keys to navigate and dodge the incoming asteroids.
+
+*Usage:*
+```bash
+asteroid-dodge
+```
+> Press `Esc` or `Ctrl+C` to exit the game at any time.
 
 ## Code Explanation
 
-This application is built with modern web technologies, focusing on a lightweight footprint and a clean, component-based architecture.
+The application is built with vanilla JavaScript, HTML, and CSS, with a focus on simplicity and performance.
 
-### Tech Stack
-
--   **React.js:** For building the dynamic and responsive user interface.
--   **Styled-Components:** For component-level CSS styling and the dynamic theming system.
--   **TypeScript:** For static typing to improve code quality and maintainability.
-
-### Development Principles
-
--   **Zero Regression:** All enhancements were layered on top of the existing application without altering, restyling, or removing any original functionality. Core commands, animations, and data behave identically to the baseline version.
--   **Component Reuse:** New features like the mini-games and ASCII art viewer are self-contained components that render within the existing command output area. This approach prevents any disruptive DOM rearrangements and maintains a clean separation of concerns.
+-   **Command Bus**: A central command registry (a simple JavaScript object) maps input strings to corresponding functions. New features like `ascii_mood` and the mini-games are added as new entries to this registry without modifying the core command-handling logic.
+-   **Theming Engine**: Themes are managed using CSS variables defined on the `:root` element. The `theme set <name>` command dynamically updates these variables to apply the new color palette instantly. The new themes are self-contained sets of these variables.
+-   **Component Re-use**: All new features render their output into the existing terminal history component. This approach prevents any layout shifts or DOM rearrangements, as the new content is simply appended to the output log just like the response from any original command.
+-   **Self-Contained Games**: The `type-racer` and `asteroid-dodge` games are designed to be entirely self-contained. Their logic, event listeners (for keyboard input), and render loops are initialized on start and completely torn down on exit, ensuring they do not interfere with the terminal's primary functionality.
 
 ## License
 
-This project is distributed under the MIT License. See `LICENSE.txt` for more information.
+This project is distributed under the MIT License. See the `LICENSE.txt` file for more information.
 
-```text
+```
 MIT License
 
-Copyright (c) 2024
+Copyright (c) 2024 [Your Name]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -95,4 +127,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
 ```
