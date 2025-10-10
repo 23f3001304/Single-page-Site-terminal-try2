@@ -3,604 +3,643 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal Portfolio</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡️</text></svg>">
+    <title>Hemang :: Web3 Dossier</title>
+    <meta name="description" content="A web3-grade resume world for Hemang, fusing Swiss design with high-energy shader artistry.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
     <style>
         :root {
-            --background: #1a1b26;
-            --foreground: #c0caf5;
-            --primary: #bb9af7;
-            --secondary: #7aa2f7;
-            --accent: #f7768e;
-            --border: #414868;
-            --font-family: 'Fira Code', monospace;
-            --font-size: 16px;
+            --font-primary: 'Inter', sans-serif;
+            --font-mono: 'Source Code Pro', monospace;
+            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+            /* Neon Theme (Default) */
+            --color-bg: #0a0a0f;
+            --color-text: #e0e0e0;
+            --color-primary: #00f0ff;
+            --color-secondary: #ff00ff;
+            --color-accent: #f0ff00;
+            --color-error: #ff4d4d;
+            --color-success: #4dff88;
+            --glass-bg: rgba(16, 16, 24, 0.6);
+            --glass-border: rgba(0, 240, 255, 0.2);
+            --grid-line-color: rgba(0, 240, 255, 0.08);
+            --shadow-glow: 0 0 15px rgba(0, 240, 255, 0.2), 0 0 30px rgba(0, 240, 255, 0.1);
+        }
+
+        body.theme-monochrome {
+            --color-bg: #f0f0f0;
+            --color-text: #1a1a1a;
+            --color-primary: #000000;
+            --color-secondary: #555555;
+            --color-accent: #0000ff;
+            --color-error: #d90000;
+            --color-success: #008a00;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --grid-line-color: rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         html, body {
+            width: 100%;
             height: 100%;
-            margin: 0;
-            padding: 0;
             overflow: hidden;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-primary);
+            font-size: 16px;
         }
 
-        body {
-            background-color: var(--background);
-            color: var(--foreground);
-            font-family: var(--font-family);
-            font-size: var(--font-size);
-            line-height: 1.6;
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            outline: none;
+            z-index: 1;
+        }
+        
+        #webgl-fallback {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-image: url('https://i.ibb.co/jZxwXR2Y/1759419391197.png');
+            background-size: cover;
+            border: 2px solid var(--color-primary);
+            box-shadow: var(--shadow-glow);
         }
 
-        #bg-canvas {
+        #preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            opacity: 0.5;
+            background: var(--color-bg);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            color: var(--color-primary);
+            font-size: 1.2rem;
+            opacity: 1;
+            transition: opacity 0.5s var(--ease-out-quart);
+        }
+        
+        #preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         #terminal-container {
             position: relative;
-            z-index: 1;
-            height: 100%;
+            z-index: 2;
             width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            scrollbar-width: none; /* Firefox */
+            height: 100%;
+            padding: 2vw;
+            display: flex;
+            flex-direction: column;
+            background-image:
+                linear-gradient(var(--grid-line-color) 1px, transparent 1px),
+                linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
-        #terminal-container::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
+        
+        #output-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 15px; /* for scrollbar */
+        }
+        
+        #output-container::-webkit-scrollbar {
+            width: 4px;
         }
 
-        #output {
+        #output-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #output-container::-webkit-scrollbar-thumb {
+            background-color: var(--color-primary);
+            border-radius: 2px;
+        }
+
+        .output-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-glow);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .input-line-history {
+            margin-bottom: 0.5rem;
+            font-family: var(--font-mono);
+        }
+        
+        .prompt-symbol {
+            color: var(--color-primary);
+            margin-right: 0.5em;
+        }
+        
+        .output-content {
+            font-family: var(--font-primary);
+            line-height: 1.7;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
 
-        .input-line {
+        .output-content h2 {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.5rem;
+        }
+        
+        .output-content h3 {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--color-secondary);
+            margin-top: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .output-content strong {
+            color: var(--color-accent);
+            font-weight: 500;
+        }
+        
+        .output-content a {
+            color: var(--color-primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--color-primary);
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        
+        .output-content a:hover {
+            color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+        
+        .output-content ul {
+            list-style: none;
+            padding-left: 1em;
+        }
+        
+        .output-content li::before {
+            content: '»';
+            color: var(--color-primary);
+            margin-right: 0.75em;
+        }
+
+        #input-line {
             display: flex;
             align-items: center;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            margin-top: 1rem;
         }
-
-        .prompt {
-            color: var(--primary);
-            margin-right: 8px;
-            white-space: nowrap;
-        }
-
-        #input-field {
-            background: none;
-            border: none;
-            color: var(--foreground);
-            font-family: var(--font-family);
-            font-size: inherit;
+        
+        #command-input {
             flex-grow: 1;
-            padding: 0;
-        }
-
-        #input-field:focus {
+            border: none;
+            background: transparent;
+            color: var(--color-text);
+            font-family: inherit;
+            font-size: inherit;
             outline: none;
         }
-
-        a {
-            color: var(--secondary);
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .command-output {
-            margin-bottom: 10px;
+        
+        #command-input::placeholder {
+            color: rgba(224, 224, 224, 0.4);
         }
         
-        .help-command {
-            color: var(--primary);
-            font-weight: 500;
-            width: 120px;
-            display: inline-block;
+        body.theme-monochrome #command-input::placeholder {
+            color: rgba(26, 26, 26, 0.4);
         }
 
-        .ascii-art {
-            color: var(--accent);
-            white-space: pre;
-            font-size: 14px;
-            line-height: 1.2;
-            text-shadow: 0 0 5px var(--accent);
-            letter-spacing: -1px;
-        }
-        
         @media (prefers-reduced-motion: reduce) {
-            .ascii-art {
-                text-shadow: none;
+            * {
+                animation: none !important;
+                transition: none !important;
             }
-        }
-        
-        .game-container {
-            border: 1px solid var(--border);
-            padding: 1rem;
-            margin-top: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #type-racer-text {
-            color: var(--secondary);
-            user-select: none;
-        }
-
-        #asteroid-dodge-screen {
-            width: 100%;
-            height: 200px;
-            background-color: rgba(0,0,0,0.2);
-            cursor: none;
-            position: relative;
-            overflow: hidden;
-            font-family: monospace;
-        }
-
-        .player {
-            position: absolute;
-            color: var(--primary);
-            font-size: 18px;
-            user-select: none;
-        }
-
-        .asteroid {
-            position: absolute;
-            color: var(--accent);
-            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <canvas id="bg-canvas"></canvas>
-    <div id="terminal-container" onclick="document.getElementById('input-field').focus();">
-        <div id="output"></div>
-        <div class="input-line">
-            <span class="prompt">guest@portfolio:~$</span>
-            <input type="text" id="input-field" autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <div id="preloader">INITIALIZING_DOSSIER...</div>
+    <div id="webgl-canvas"></div>
+    <div id="webgl-fallback"></div>
+    
+    <div id="terminal-container">
+        <div id="output-container"></div>
+        <div id="input-line">
+            <span class="prompt-symbol">HMG_OS &gt;</span>
+            <input type="text" id="command-input" autofocus autocomplete="off" spellcheck="false" placeholder="Type 'help' to start...">
         </div>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    
+    <audio id="audio-keypress" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-computer-sounds/computer_keyboard_key_press_001.mp3" preload="auto"></audio>
+    <audio id="audio-enter" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-computer-sounds/computer_ui_beep_double_001.mp3" preload="auto"></audio>
+    <audio id="audio-error" src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-35328/zapsplat_multimedia_game_sound_error_001_38359.mp3" preload="auto"></audio>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const output = document.getElementById('output');
-            const inputField = document.getElementById('input-field');
-            const terminalContainer = document.getElementById('terminal-container');
-
-            let commandHistory = [];
-            let historyIndex = -1;
-            let activeGame = null;
-
-            const print = (html, isCommandOutput = false) => {
-                const line = document.createElement('div');
-                if (isCommandOutput) {
-                    line.classList.add('command-output');
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DATA STORE ---
+        const RESUME_DATA = {
+            name: "Hemang",
+            headline: "Learning Java, C++, C, Python, JavaScript and MERN Stack | BS in DS @ IITM | BE CSIT @ MBMU | AI/ML enthusiast | Preparing to write 12M lines of code",
+            mantra: "Architecting digital realities with Swiss precision and shader artistry. Every line of code is a brushstroke on the canvas of computation.",
+            whoami: "A dual-degree student architecting a future in technology, currently pursuing a BS in Data Science from IIT Madras and a BE in Information Technology from MBMU. My focus is on merging robust software engineering with the creative potential of AI and machine learning. I am passionate about building high-performance, visually compelling applications and am on a personal mission to write 12 million lines of meaningful code.",
+            contact: {
+                email: "coehemang@gmail.com",
+                linkedin: "https://www.linkedin.com/in/coehemang/",
+            },
+            socials: {
+                linkedin: "https://www.linkedin.com/in/coehemang/",
+                // Add more here when available
+            },
+            skills: {
+                "Programming Languages": ["Java", "C++", "C", "Python", "JavaScript"],
+                "Web Technologies": ["MERN Stack (MongoDB, Express, React, Node.js)", "HTML5", "CSS3"],
+                "Core Competencies": ["AI/ML", "Data Science", "Research Skills", "GaN (Generative Adversarial Networks)"],
+                "Software Development": ["Full Stack Web Development", "Object-Oriented Programming"],
+                "Databases": ["SQL (Advanced)"],
+            },
+            experience: [
+                {
+                    role: "Research Intern",
+                    company: "Defence Research and Development Organisation (DRDO)",
+                    duration: "June 2025 – Present",
+                    description: "Engaged in the GANxART project, focusing on the application of Generative Adversarial Networks in creative and artistic domains.",
                 }
-                line.innerHTML = html;
-                output.appendChild(line);
-                terminalContainer.scrollTop = terminalContainer.scrollHeight;
-            };
+            ],
+            education: [
+                {
+                    degree: "BS in Data Science and Applications",
+                    institution: "IIT Madras, India",
+                    duration: "2023 – 2027",
+                },
+                {
+                    degree: "BE in Computer Science & Information Technology",
+                    institution: "MBM University, Jodhpur",
+                    duration: "2023 – 2027",
+                },
+            ],
+            certifications: [
+                "Amazon Introduction to Software Development",
+                "SQL (Advanced)",
+                "Introduction to SQL",
+                "Certificate of Excellence in Basic Java",
+                "Full Stack Web Development"
+            ],
+            publications: [
+                { title: "Crushader Issue 1", context: "Contributor" },
+                { title: "Tips for Beginners in Code", context: "Author" }
+            ],
+            languages: [
+                { lang: "Hindi", proficiency: "Native / Bilingual" },
+                { lang: "English", proficiency: "Professional Working" }
+            ],
+            availability: "Available for challenging internships and collaborative projects. Open to opportunities starting immediately.",
+            references: "Available upon request.",
+            achievements: ["Currently preparing for a long-term goal of writing 12 million lines of code."],
+        };
 
-            const printCommand = (command) => {
-                const line = `<div class="input-line"><span class="prompt">guest@portfolio:~$</span><span>${command}</span></div>`;
-                print(line);
-            };
-            
-            const commands = {
-                help: {
-                    description: 'Lists all available commands.',
-                    action: () => {
-                        let helpText = 'Available commands:<br>';
-                        Object.keys(commands).sort().forEach(cmd => {
-                            helpText += `<span class="help-command">${cmd}</span> - ${commands[cmd].description}<br>`;
-                        });
-                        return helpText;
-                    }
-                },
-                about: {
-                    description: 'Displays information about me.',
-                    action: () => 'Senior front-end engineer specializing in premium, performant single-page applications.<br>I craft immersive digital experiences with Swiss grid typography, Three.js visuals, and fluid motion design.'
-                },
-                social: {
-                    description: 'Lists my social media profiles.',
-                    action: () => `
-                        <a href="#" target="_blank">GitHub</a>
-                        <a href="#" target="_blank">LinkedIn</a>
-                        <a href="#" target="_blank">Twitter</a>
-                    `.trim()
-                },
-                projects: {
-                    description: 'Shows my featured projects.',
-                    action: () => `
-                        Project Alpha - Interactive WebGL data visualization.<br>
-                        Project Beta - Headless CMS-driven e-commerce platform.<br>
-                        Project Gamma - Award-winning marketing site with scroll-driven animations.
-                    `.trim()
-                },
-                theme: {
-                    description: 'Changes the terminal color scheme. Usage: theme [name]',
-                    action: (args) => {
-                        const themes = {
-                            default: {
-                                '--background': '#1a1b26',
-                                '--foreground': '#c0caf5',
-                                '--primary': '#bb9af7',
-                                '--secondary': '#7aa2f7',
-                                '--accent': '#f7768e',
-                                '--border': '#414868',
-                            },
-                            'aurora-drift': {
-                                '--background': '#011926',
-                                '--foreground': '#E0FFFA',
-                                '--primary': '#247b7b',
-                                '--secondary': '#88D9E6',
-                                '--accent': '#F2B705',
-                                '--border': '#023859',
-                            },
-                            'mono-noir': {
-                                '--background': '#101010',
-                                '--foreground': '#d0d0d0',
-                                '--primary': '#f0f0f0',
-                                '--secondary': '#a0a0a0',
-                                '--accent': '#ffffff',
-                                '--border': '#444444',
-                            }
-                        };
-                        
-                        if (!args.length) {
-                             return `Available themes: ${Object.keys(themes).join(', ')}<br>Usage: theme [name]`;
+        // --- THREE.JS CONTROLLER ---
+        let webglController;
+        try {
+            webglController = {
+                scene: new THREE.Scene(),
+                camera: new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000),
+                renderer: new THREE.WebGLRenderer({ antialias: true, alpha: true }),
+                mouse: new THREE.Vector2(0, 0),
+                targetMouse: new THREE.Vector2(0, 0),
+                portraitMesh: null,
+                clock: new THREE.Clock(),
+
+                init() {
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    document.getElementById('webgl-canvas').appendChild(this.renderer.domElement);
+                    this.camera.position.z = 2;
+
+                    const textureLoader = new THREE.TextureLoader();
+                    textureLoader.load(
+                        'https://i.ibb.co/jZxwXR2Y/1759419391197.png',
+                        (texture) => {
+                            this.createPortrait(texture);
+                            document.getElementById('preloader').classList.add('hidden');
+                        },
+                        undefined,
+                        (err) => {
+                            console.error('An error happened loading the texture.', err);
+                            this.handleError();
                         }
-
-                        const themeName = args.toLowerCase();
-                        if (themes[themeName]) {
-                            const theme = themes[themeName];
-                            for (const [key, value] of Object.entries(theme)) {
-                                document.documentElement.style.setProperty(key, value);
-                            }
-                            return `Theme set to '${themeName}'.`;
-                        }
-                        return `Error: Theme '${themeName}' not found.`;
-                    }
+                    );
+                    
+                    window.addEventListener('resize', this.onWindowResize.bind(this));
+                    window.addEventListener('mousemove', this.onMouseMove.bind(this));
+                    this.animate();
                 },
-                history: {
-                    description: 'Shows command history.',
-                    action: () => commandHistory.map((cmd, i) => `${i}: ${cmd}`).join('<br>')
+                
+                handleError() {
+                    document.getElementById('webgl-canvas').style.display = 'none';
+                    document.getElementById('webgl-fallback').style.display = 'block';
+                    document.getElementById('preloader').classList.add('hidden');
                 },
-                clear: {
-                    description: 'Clears the terminal screen.',
-                    action: () => {
-                        output.innerHTML = '';
-                        return '';
-                    }
-                },
-                ascii_mood: {
-                    description: 'Displays a chill ASCII art portrait.',
-                    action: () => {
-                         const art = `
-    _   _
-   (o_o)
-  /|   |\\
- / |   | \\
-/  |   |  \\
-   |   |
-   |   |
-  /     \\
- /       \\
-                        `;
-                        return `<div class="ascii-art">${art}</div>`;
-                    }
-                },
-                'type-racer': {
-                    description: 'Starts a timed typing challenge.',
-                    action: () => {
-                        if (activeGame) return 'Another game is already running. Please exit it first.';
-                        activeGame = 'type-racer';
-                        const sentences = [
-                            "The quick brown fox jumps over the lazy dog.",
-                            "Swiss grid typography balances structure and creativity.",
-                            "Three.js unlocks the power of 3D graphics on the web.",
-                            "Performance-minded loading is crucial for user experience.",
-                            "Semantic HTML5 enhances accessibility and SEO.",
-                        ];
-                        const sentence = sentences[Math.floor(Math.random() * sentences.length)];
-                        let startTime;
-                        
-                        const gameContainer = document.createElement('div');
-                        gameContainer.className = 'game-container';
-                        
-                        const textDisplay = document.createElement('div');
-                        textDisplay.id = 'type-racer-text';
-                        textDisplay.innerHTML = sentence.split('').map(char => `<span>${char}</span>`).join('');
-                        
-                        const instructions = document.createElement('div');
-                        instructions.textContent = 'Type the text above. The timer starts on your first keystroke. Type "exit" to quit.';
-                        instructions.style.marginTop = '10px';
-                        instructions.style.fontSize = '0.9em';
 
-                        gameContainer.appendChild(textDisplay);
-                        gameContainer.appendChild(instructions);
-                        output.appendChild(gameContainer);
-                        terminalContainer.scrollTop = terminalContainer.scrollHeight;
-
-                        let currentIndex = 0;
-                        const spans = textDisplay.querySelectorAll('span');
-
-                        const gameInputHandler = (e) => {
-                            if (e.key === 'Enter') {
-                                const currentInput = inputField.value.trim();
-                                if (currentInput.toLowerCase() === 'exit') {
-                                    endGame();
-                                    return;
-                                }
+                createPortrait(texture) {
+                    const geometry = new THREE.PlaneGeometry(2.5, 2.5, 128, 128);
+                    const material = new THREE.ShaderMaterial({
+                        uniforms: {
+                            uTime: { value: 0 },
+                            uTexture: { value: texture },
+                            uMouse: { value: new THREE.Vector2(0, 0) },
+                            uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+                        },
+                        vertexShader: `
+                            varying vec2 vUv;
+                            uniform float uTime;
+                            uniform vec2 uMouse;
+                            void main() {
+                                vUv = uv;
+                                vec3 pos = position;
+                                float dist = distance(uv, uMouse);
+                                pos.z += sin(dist * 10.0 - uTime * 2.0) * 0.05;
+                                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
                             }
-                            if (e.key.length > 1) return; // Ignore control keys
-
-                            if (!startTime) {
-                                startTime = new Date();
-                            }
-                            
-                            const expectedChar = sentence[currentIndex];
-                            const typedChar = e.key;
-                            
-                            if (typedChar === expectedChar) {
-                                spans[currentIndex].style.color = 'var(--primary)';
-                                currentIndex++;
-                            } else {
-                                spans[currentIndex].style.color = 'var(--accent)';
-                            }
-
-                            if (currentIndex === sentence.length) {
-                                const endTime = new Date();
-                                const duration = (endTime - startTime) / 1000; // in seconds
-                                const words = sentence.split(' ').length;
-                                const wpm = Math.round((words / duration) * 60);
-                                print(`</br>Congratulations! Your WPM: <strong>${wpm}</strong>`);
-                                endGame();
-                            }
-                        };
-                        
-                        const endGame = () => {
-                            inputField.removeEventListener('keydown', gameInputHandler);
-                            inputField.value = '';
-                            printCommand('');
-                            activeGame = null;
-                        };
-                        
-                        inputField.addEventListener('keydown', gameInputHandler);
-                        return 'Type Racer started. Focus the input below and start typing.';
-                    }
-                },
-                'asteroid-dodge': {
-                    description: 'Starts a cursor-controlled avoidance mini-game.',
-                    action: () => {
-                        if (activeGame) return 'Another game is already running. Please exit it first.';
-                        activeGame = 'asteroid-dodge';
-                        
-                        const gameContainer = document.createElement('div');
-                        gameContainer.className = 'game-container';
-                        const screen = document.createElement('div');
-                        screen.id = 'asteroid-dodge-screen';
-                        
-                        const instructions = document.createElement('div');
-                        instructions.textContent = 'Move your mouse to dodge the asteroids. Type "exit" to quit.';
-                        instructions.style.fontSize = '0.9em';
-                        
-                        gameContainer.appendChild(instructions);
-                        gameContainer.appendChild(screen);
-                        output.appendChild(gameContainer);
-                        terminalContainer.scrollTop = terminalContainer.scrollHeight;
-
-                        const player = document.createElement('div');
-                        player.textContent = 'A';
-                        player.className = 'player';
-                        screen.appendChild(player);
-
-                        let score = 0;
-                        let gameLoop;
-                        let gameOver = false;
-                        
-                        const screenRect = screen.getBoundingClientRect();
-
-                        const mouseMoveHandler = (e) => {
-                            if (gameOver) return;
-                            let playerX = e.clientX - screenRect.left - 10;
-                            let playerY = e.clientY - screenRect.top - 10;
-                            playerX = Math.max(0, Math.min(screenRect.width - 20, playerX));
-                            playerY = Math.max(0, Math.min(screenRect.height - 20, playerY));
-                            player.style.left = `${playerX}px`;
-                            player.style.top = `${playerY}px`;
-                        };
-                        screen.addEventListener('mousemove', mouseMoveHandler);
-
-                        const update = () => {
-                            if (gameOver) return;
-                            
-                            // Create new asteroids
-                            if (Math.random() < 0.1) {
-                                const asteroid = document.createElement('div');
-                                asteroid.textContent = '*';
-                                asteroid.className = 'asteroid';
-                                asteroid.style.left = `${Math.random() * screenRect.width}px`;
-                                asteroid.style.top = `-10px`;
-                                screen.appendChild(asteroid);
-                            }
-
-                            // Move asteroids and check for collisions
-                            const asteroids = screen.querySelectorAll('.asteroid');
-                            const playerRect = player.getBoundingClientRect();
-                            
-                            asteroids.forEach(asteroid => {
-                                const currentTop = parseFloat(asteroid.style.top);
-                                asteroid.style.top = `${currentTop + 3}px`;
-
-                                if (currentTop > screenRect.height) {
-                                    asteroid.remove();
-                                    score++;
-                                }
+                        `,
+                        fragmentShader: `
+                            uniform sampler2D uTexture;
+                            uniform float uTime;
+                            varying vec2 vUv;
+                            void main() {
+                                vec2 uv = vUv;
+                                float time = uTime * 0.5;
+                                vec4 color = texture2D(uTexture, uv);
                                 
-                                const asteroidRect = asteroid.getBoundingClientRect();
-                                if (
-                                    playerRect.left < asteroidRect.right &&
-                                    playerRect.right > asteroidRect.left &&
-                                    playerRect.top < asteroidRect.bottom &&
-                                    playerRect.bottom > asteroidRect.top
-                                ) {
-                                    endGame(true);
-                                }
-                            });
-                            
-                            gameLoop = requestAnimationFrame(update);
-                        };
-
-                        const inputHandler = (e) => {
-                           if (e.key === 'Enter' && inputField.value.trim().toLowerCase() === 'exit') {
-                               endGame(false);
-                           }
-                        };
-                        
-                        const endGame = (crashed) => {
-                            gameOver = true;
-                            cancelAnimationFrame(gameLoop);
-                            screen.removeEventListener('mousemove', mouseMoveHandler);
-                            inputField.removeEventListener('keydown', inputHandler);
-                            inputField.value = '';
-
-                            if (crashed) {
-                                player.textContent = 'X';
-                                player.style.color = 'var(--accent)';
-                                print(`</br>Game Over! Final Score: ${score}`);
-                            } else {
-                                print(`</br>Game exited. Final Score: ${score}`);
+                                // Scanline
+                                float scanline = sin(uv.y * 800.0 - time * 10.0) * 0.02;
+                                color.rgb -= scanline;
+                                
+                                // Glitch
+                                float glitch = texture2D(uTexture, vec2(uv.x + sin(uv.y * 20.0 + time) * 0.02, uv.y)).r;
+                                color.r += glitch * 0.1;
+                                
+                                gl_FragColor = color;
                             }
-                            printCommand('');
-                            activeGame = null;
-                        };
-                        
-                        inputField.addEventListener('keydown', inputHandler);
-                        gameLoop = requestAnimationFrame(update);
-                        return 'Asteroid Dodge started. Move your mouse in the box above.';
+                        `
+                    });
+                    this.portraitMesh = new THREE.Mesh(geometry, material);
+                    this.scene.add(this.portraitMesh);
+                },
+
+                onWindowResize() {
+                    this.camera.aspect = window.innerWidth / window.innerHeight;
+                    this.camera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                    if (this.portraitMesh) {
+                        this.portraitMesh.material.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
                     }
+                },
+                
+                onMouseMove(event) {
+                    this.targetMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                    this.targetMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                },
+
+                animate() {
+                    requestAnimationFrame(this.animate.bind(this));
+                    const elapsedTime = this.clock.getElapsedTime();
+                    
+                    // Lerp mouse for smooth movement
+                    this.mouse.x += (this.targetMouse.x * 0.5 - this.mouse.x) * 0.05;
+                    this.mouse.y += (this.targetMouse.y * 0.5 - this.mouse.y) * 0.05;
+
+                    if (this.portraitMesh) {
+                        this.portraitMesh.material.uniforms.uTime.value = elapsedTime;
+                        this.portraitMesh.material.uniforms.uMouse.value.set(this.mouse.x, this.mouse.y);
+                    }
+                    this.renderer.render(this.scene, this.camera);
                 }
             };
+            webglController.init();
+        } catch (e) {
+            console.error("WebGL initialization failed.", e);
+            if (webglController) webglController.handleError();
+            else {
+                 document.getElementById('webgl-canvas').style.display = 'none';
+                 document.getElementById('webgl-fallback').style.display = 'block';
+                 document.getElementById('preloader').classList.add('hidden');
+            }
+        }
+        
 
-            const runCommand = (commandStr) => {
-                printCommand(commandStr);
-                commandHistory.unshift(commandStr);
-                if (commandHistory.length > 50) commandHistory.pop();
-                historyIndex = -1;
-
-                const [cmd, ...args] = commandStr.trim().split(/\s+/);
-
-                if (commands[cmd]) {
-                    const result = commands[cmd].action(args);
-                    if (result) print(result, true);
-                } else if (cmd) {
-                    print(`Command not found: ${cmd}. Type 'help' for a list of commands.`, true);
+        // --- AUDIO CONTROLLER ---
+        const audioController = {
+            sounds: {
+                keypress: document.getElementById('audio-keypress'),
+                enter: document.getElementById('audio-enter'),
+                error: document.getElementById('audio-error'),
+            },
+            play(sound) {
+                if (this.sounds[sound]) {
+                    this.sounds[sound].currentTime = 0;
+                    this.sounds[sound].play().catch(e => {});
                 }
-                
-                // Reset input value only if not in a game that uses it
-                if (!activeGame) {
-                    inputField.value = '';
-                }
-                
-            };
+            }
+        };
 
-            inputField.addEventListener('keydown', (e) => {
-                if (activeGame) return; // Let game handlers take control
+        // --- TERMINAL CONTROLLER ---
+        const terminalController = {
+            input: document.getElementById('command-input'),
+            outputContainer: document.getElementById('output-container'),
+            commandHistory: [],
+            historyIndex: -1,
 
+            init() {
+                this.input.addEventListener('keydown', this.handleInput.bind(this));
+                document.addEventListener('click', () => this.input.focus());
+                this.typeCommand('help', true);
+            },
+
+            handleInput(e) {
+                audioController.play('keypress');
                 if (e.key === 'Enter') {
-                    e.preventDefault();
-                    runCommand(inputField.value);
+                    audioController.play('enter');
+                    const command = this.input.value.trim();
+                    if (command) {
+                        this.commandHistory.push(command);
+                        this.historyIndex = this.commandHistory.length;
+                        this.processCommand(command);
+                    }
+                    this.input.value = '';
                 } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    if (historyIndex < commandHistory.length - 1) {
-                        historyIndex++;
-                        inputField.value = commandHistory[historyIndex];
-                        setTimeout(() => inputField.setSelectionRange(inputField.value.length, inputField.value.length), 0);
+                    if (this.historyIndex > 0) {
+                        this.historyIndex--;
+                        this.input.value = this.commandHistory[this.historyIndex];
+                        e.preventDefault();
                     }
                 } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    if (historyIndex > 0) {
-                        historyIndex--;
-                        inputField.value = commandHistory[historyIndex];
-                        setTimeout(() => inputField.setSelectionRange(inputField.value.length, inputField.value.length), 0);
+                    if (this.historyIndex < this.commandHistory.length - 1) {
+                        this.historyIndex++;
+                        this.input.value = this.commandHistory[this.historyIndex];
                     } else {
-                        historyIndex = -1;
-                        inputField.value = '';
+                        this.historyIndex = this.commandHistory.length;
+                        this.input.value = '';
                     }
-                } else if (e.key === 'Tab') {
-                    e.preventDefault();
-                    // Autocomplete logic could go here
                 }
-            });
+            },
 
-            const welcomeMessage = `
-Welcome to my interactive portfolio.
-Type 'help' to see the list of available commands.
-            `;
-            print(welcomeMessage, true);
+            processCommand(input) {
+                const [command, ...args] = input.toLowerCase().split(' ');
+                const historyHtml = `
+                    <div class="input-line-history">
+                        <span class="prompt-symbol">HMG_OS &gt;</span>
+                        <span>${input}</span>
+                    </div>`;
+
+                if (command in commands) {
+                    const output = commands[command](args);
+                    this.renderOutput(historyHtml, output);
+                } else {
+                    const output = `<div style="color:var(--color-error)">Error: Command not found: '${command}'. Type 'help' for a list of commands.</div>`;
+                    this.renderOutput(historyHtml, output);
+                    audioController.play('error');
+                }
+            },
             
-            // --- Three.js Background ---
-            let scene, camera, renderer, stars;
-
-            function initThreeJS() {
-                scene = new THREE.Scene();
-                camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-                camera.position.z = 1;
-                camera.rotation.x = Math.PI / 2;
-
-                renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
-                renderer.setSize(window.innerWidth, window.innerHeight);
-
-                const starGeo = new THREE.BufferGeometry();
-                const starCount = 6000;
-                const positions = new Float32Array(starCount * 3);
-                for (let i = 0; i < starCount * 3; i++) {
-                    positions[i] = (Math.random() - 0.5) * 600;
+            async typeCommand(command, isInstant = false) {
+                if (isInstant) {
+                    this.processCommand(command);
+                    return;
                 }
-                starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+                for (let i = 0; i < command.length; i++) {
+                    this.input.value += command.charAt(i);
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                await new Promise(resolve => setTimeout(resolve, 500));
+                this.processCommand(this.input.value);
+                this.input.value = '';
+            },
+
+            renderOutput(historyHtml, outputHtml) {
+                const card = document.createElement('div');
+                card.classList.add('output-card');
+                card.innerHTML = historyHtml + `<div class="output-content">${outputHtml}</div>`;
+                this.outputContainer.appendChild(card);
                 
-                let starMaterial = new THREE.PointsMaterial({
-                    color: 0xaaaaaa,
-                    size: 0.7,
-                    transparent: true
+                gsap.fromTo(card, 
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.5, ease: 'power4.out' }
+                );
+                
+                this.outputContainer.scrollTop = this.outputContainer.scrollHeight;
+                
+                // Add micro-interactions to new links
+                const links = card.querySelectorAll('a');
+                links.forEach(link => {
+                    anime({
+                        targets: link,
+                        color: ['var(--color-primary)', 'var(--color-accent)'],
+                        duration: 300,
+                        easing: 'easeInOutSine',
+                        direction: 'alternate',
+                        loop: true,
+                        delay: anime.random(500, 1500)
+                    });
                 });
-
-                stars = new THREE.Points(starGeo, starMaterial);
-                scene.add(stars);
-
-                window.addEventListener('resize', onWindowResize, false);
-                animate();
             }
+        };
 
-            function onWindowResize() {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
+        // --- COMMANDS DEFINITION ---
+        const commands = {
+            help: () => `
+                <h2>Command Directory [HMG_OS v1.0]</h2>
+                <p>Welcome to my interactive dossier. All data is sourced from my personal records. Use the commands below to navigate.</p>
+                <ul>
+                    <li><strong>whoami</strong> - Displays my professional summary.</li>
+                    <li><strong>experience</strong> - Details my work experience.</li>
+                    <li><strong>skills</strong> - Lists my technical skill set.</li>
+                    <li><strong>education</strong> - Shows my educational background.</li>
+                    <li><strong>projects</strong> - (Coming Soon) Showcases my project portfolio.</li>
+                    <li><strong>certifications</strong> - Lists my professional certifications.</li>
+                    <li><strong>publications</strong> - My published works.</li>
+                    <li><strong>languages</strong> - Languages I speak.</li>
+                    <li><strong>contact</strong> - How to get in touch.</li>
+                    <li><strong>socials</strong> - My social media presence.</li>
+                    <li><strong>availability</strong> - My current work availability.</li>
+                    <li><strong>references</strong> - Information on references.</li>
+                    <li><strong>mantra</strong> - My guiding principle.</li>
+                    <li><strong>theme [neon|monochrome]</strong> - Toggles the UI theme.</li>
+                    <li><strong>art</strong> - Information about the background visual.</li>
+                    <li><strong>download</strong> - (Coming Soon) Get a PDF version of my resume.</li>
+                    <li><strong>clear</strong> - Clears the terminal screen.</li>
+                </ul>
+            `,
+            whoami: () => `<h2>Identity Profile</h2><p>${RESUME_DATA.whoami}</p><h3>Headline</h3><p>${RESUME_DATA.headline}</p>`,
+            experience: () => `<h2>Work Experience</h2>` + RESUME_DATA.experience.map(e => `<h3>${e.role} @ ${e.company}</h3><strong>Duration:</strong> ${e.duration}<br><p>${e.description}</p>`).join(''),
+            skills: () => `<h2>Skill Matrix</h2>` + Object.entries(RESUME_DATA.skills).map(([category, skills]) => `<h3>${category}</h3><ul>${skills.map(s => `<li>${s}</li>`).join('')}</ul>`).join(''),
+            education: () => `<h2>Education</h2>` + RESUME_DATA.education.map(e => `<h3>${e.degree}</h3><p>${e.institution} (${e.duration})</p>`).join(''),
+            projects: () => `<p>The 'projects' module is currently under development. Please check back later.</p>`,
+            certifications: () => `<h2>Certifications</h2><ul>${RESUME_DATA.certifications.map(c => `<li>${c}</li>`).join('')}</ul>`,
+            publications: () => `<h2>Publications</h2><ul>${RESUME_DATA.publications.map(p => `<li>${p.title} (${p.context})</li>`).join('')}</ul>`,
+            languages: () => `<h2>Languages</h2><ul>${RESUME_DATA.languages.map(l => `<li>${l.lang} - <strong>${l.proficiency}</strong></li>`).join('')}</ul>`,
+            contact: () => `<h2>Contact Channels</h2><ul><li>Email: <a href="mailto:${RESUME_DATA.contact.email}">${RESUME_DATA.contact.email}</a></li><li>LinkedIn: <a href="${RESUME_DATA.contact.linkedin}" target="_blank">${RESUME_DATA.contact.linkedin}</a></li></ul>`,
+            socials: () => `<h2>Social Network Links</h2><ul>` + Object.entries(RESUME_DATA.socials).map(([platform, url]) => `<li>${platform.charAt(0).toUpperCase() + platform.slice(1)}: <a href="${url}" target="_blank">${url}</a></li>`).join('') + `</ul>`,
+            availability: () => `<h2>Availability Status</h2><p style="color:var(--color-success)">${RESUME_DATA.availability}</p>`,
+            references: () => `<h2>References</h2><p>${RESUME_DATA.references}</p>`,
+            mantra: () => `<h2>Mantra</h2><p><em>"${RESUME_DATA.mantra}"</em></p>`,
+            art: () => `<h2>Art Engine</h2><p>The background is a real-time WebGL portrait rendered with Three.js. It uses custom GLSL shaders to create reactive displacement, scanlines, and glitch effects based on your cursor's position. It is designed to be a living piece of digital art representing the fusion of code and creativity.</p>`,
+            download: () => `<p>The 'download' module is not yet implemented. A PDF version of this resume will be available soon.</p>`,
+           theme: (args) => {
+            const mode = args[0];
+            if (mode === 'neon' || mode === 'monochrome') {
+                document.body.classList.remove('theme-neon', 'theme-monochrome');
+                if (mode !== 'neon') document.body.classList.add(`theme-${mode}`);
+            return `<p style="color:var(--color-success)">Theme changed to ${mode}.</p>`;
             }
+            return `<p style="color:var(--color-error)">Usage: theme [neon|monochrome]</p>`;
+            } ,
+            clear: () => {
+                terminalController.outputContainer.innerHTML = '';
+                return `Screen cleared.`;
+            }
+        };
 
-            function animate() {
-                stars.rotation.y += 0.0002;
-                renderer.render(scene, camera);
-                requestAnimationFrame(animate);
-            }
-            
-            if (window.matchMedia && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                initThreeJS();
-            }
-        });
+        // --- INITIALIZE ---
+        terminalController.init();
+    });
     </script>
 </body>
 </html>
